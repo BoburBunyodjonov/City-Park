@@ -117,7 +117,7 @@ const CustomerComment = () => {
   ];
 
   return (
-    <div className="bg-[#20A58233] py-10 px-6 rounded-3xl">
+    <div className="bg-[#20A58233] py-10 px-6 rounded-3xl" id="sharhlar">
       <h1 className="text-center text-3xl text-secondary font-bold mb-10">
         Mijozlar Fikri
       </h1>

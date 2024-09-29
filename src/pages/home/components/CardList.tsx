@@ -10,7 +10,7 @@ const CardList = () => {
 
   return (
     <>
-      <section className="text-gray-600 body-font">
+      <section className="text-gray-600 body-font" id="tutar_joylar">
         <div className="container px-5 py-3 mx-auto">
           <div className="flex flex-row justify-between items-center w-full ">
             <h1 className="sm:text-xl text-xl font-semibold title-font mb-4 text-gray-900">

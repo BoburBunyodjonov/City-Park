@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import footerLogo from "../assets/logo (1).svg";
-import { NavLink } from "../navbar/navbar.constants";
+import { MenuNavLink } from "../navbar/navbar.constants";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -48,7 +48,7 @@ const Footer = () => {
               Bo’limlar
             </h2>
             <nav className="list-none mb-10">
-              {NavLink.map((nav) => (
+              {MenuNavLink.map((nav) => (
                 <li key={uuidv4()}>
                   <Link
                     to={nav.link}

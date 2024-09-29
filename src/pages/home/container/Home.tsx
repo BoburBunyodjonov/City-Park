@@ -1,18 +1,19 @@
-import { About, Contact } from "../../../components"
-import Ipoteka from "../../../components/ipoteka/Ipoteka"
+import { About, Contact, Ipoteka } from "../../../components"
 import CardList from "../components/CardList"
-import Carousel from "../components/Carusel"
+import CaruselComp from "../components/Carusel"
 import CustomerComment from "../components/customerComment"
 
 const Home = () => {
   return (
     <>
-        <Carousel/>
+        <CaruselComp/>
         <CardList/>
         <Ipoteka/>
         <CustomerComment/>
         <About/>
         <Contact/>
+
+        
     </>
   )
 }

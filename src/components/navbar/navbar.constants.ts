@@ -1,22 +1,22 @@
-export const NavLink = [
+export const MenuNavLink = [
     {
-        link: "",
+        link: "/",
         title: "Bosh sahifa",
     },
     {
-        link: "",
+        link: "tutar_joylar",
         title: "Turar joylar",
     },
     {
-        link: "",
+        link: "haqida",
         title: "Kompaniya haqida",
     },
     {
-        link: "",
+        link: "sharhlar",
         title: "Sharhlar",
     },
     {
-        link: "",
+        link: "aloqa",
         title: "Aloqa",
     }
 ]

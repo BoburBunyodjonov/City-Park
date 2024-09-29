@@ -4,6 +4,7 @@ import Home from "./pages/home/container/Home.tsx";
 import { useTranslation } from 'react-i18next';
 import { loadTranslations } from './i18n/i18next.ts';
 import { useEffect } from "react";
+import Details from "./pages/details/Details.tsx";
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -21,7 +22,7 @@ const App = () => {
     createRoutesFromElements(
       <Route element={<RootLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={""} />
+        <Route path="/details" element={<Details/>} />
         <Route path="/contact" element={""} />
       </Route>
     )

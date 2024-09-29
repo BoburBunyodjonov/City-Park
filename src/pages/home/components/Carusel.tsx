@@ -55,7 +55,7 @@ const SamplePrevArrow: React.FC<SamplePrevArrowProps> = ({ onClick }) => {
   );
 };
 
-export default function Component() {
+export default function CaruselComp() {
   const settings = {
     dots: true,
     infinite: true,
@@ -70,7 +70,7 @@ export default function Component() {
   };
 
   return (
-    <div className="relative w-full mx-auto py-7">
+    <div className="relative w-full mx-auto py-7" id="home">
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div

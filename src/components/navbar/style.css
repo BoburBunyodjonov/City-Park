@@ -1,0 +1,11 @@
+
+.transition-max-height {
+  transition: max-height 0.5s ease-in-out; 
+}
+
+.menu-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
