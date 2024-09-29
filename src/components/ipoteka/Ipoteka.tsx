@@ -1,3 +1,5 @@
+import { MenuItem, Select, TextField } from "@mui/material";
+
 const Ipoteka = () => {
   return (
     <div className="container mx-auto p-5">
@@ -8,44 +10,38 @@ const Ipoteka = () => {
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Xonadoni tanlang
             </label>
-            <select
-              id="name"
-              name="name"
-              className="w-full bg-[#F8F8F8] rounded border  border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-[9.5px] px-3 leading-8 transition-colors duration-200 ease-in-out"
+            <Select
+              fullWidth
+              size="small"
+              id="demo-simple-select"
+              // value={age}
+              // onChange={handleChange}
             >
-              <option value="" disabled selected>
-                Rooms
-              </option>
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-              <option value="option4">Option 4</option>
-            </select>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
           </div>
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Narxi
             </label>
-            <input
-              type="text"
-              placeholder="Familiya"
-              id="email"
-              name="email"
-              value="$200,000"
-              className="w-full bg-[#F8F8F8] rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            <TextField
+              size="small"
+              fullWidth
+              id="outlined-basic"
+              variant="outlined"
             />
           </div>
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Boshlang'ich to'lov
             </label>
-            <input
-              type="text"
-              placeholder="Familiya"
-              id="email"
-              name="email"
-              value="$15,000"
-              className="w-full bg-[#F8F8F8] rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            <TextField
+              size="small"
+              fullWidth
+              id="outlined-basic"
+              variant="outlined"
             />
           </div>
         </div>

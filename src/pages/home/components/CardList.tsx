@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Card from "./Card";
 import { Range } from "react-range";
+import { MenuItem, Select } from "@mui/material";
 const CardList = () => {
   const [rangeValues, setRangeValues] = useState([0, 200000]);
 
@@ -22,19 +23,17 @@ const CardList = () => {
           </div>
           <div className="flex lg:w-2/3 w-full sm:flex-row flex-col px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 ">
             <div className="relative flex-grow w-full">
-              <select
-                id="name"
-                name="name"
-                className="w-full bg-[#F8F8F8] rounded border  border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-[9.5px] px-3 leading-8 transition-colors duration-200 ease-in-out"
+              <Select
+                fullWidth
+                size="small"
+                id="demo-simple-select"
+                // value={age}
+                // onChange={handleChange}
               >
-                <option value="" disabled selected>
-                  Rooms
-                </option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                <option value="option4">Option 4</option>
-              </select>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
             </div>
             <div className="relative bg-[#F8F8F8] flex-grow w-full rounded border flex flex-col justify-between border-gray-300">
               <div className="flex justify-between w-full px-5 mt-2">
@@ -86,19 +85,17 @@ const CardList = () => {
               </div>
             </div>
             <div className="relative flex-grow w-full">
-              <select
-                id="name"
-                name="name"
-                className="w-full bg-[#F8F8F8] rounded border  border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-[9.5px] px-3 leading-8 transition-colors duration-200 ease-in-out"
+              <Select
+                fullWidth
+                size="small"
+                id="demo-simple-select"
+                // value={age}
+                // onChange={handleChange}
               >
-                <option value="" disabled selected>
-                  Biznes Senterlar
-                </option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                <option value="option4">Option 4</option>
-              </select>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
             </div>
           </div>
         </div>
