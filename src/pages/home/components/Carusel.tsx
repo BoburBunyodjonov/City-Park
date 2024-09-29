@@ -84,15 +84,15 @@ export default function Component() {
                 backgroundRepeat: "repeat-x"
               }}
             >
-              <div className="w-[50%] h-full bg-gradient-to-b from-[#20A582] to-[#123F3C] p-8 pl-14 flex flex-col justify-around rounded-r-[150px]">
-                <h2 className="text-5xl font-bold text-white mb-4">
+              <div className="w-[70%] md:w-[50%] h-full bg-gradient-to-b from-[#20A582] to-[#123F3C] p-8 flex flex-col justify-evenly rounded-r-[150px]">
+                <h2 className=" text-3xl md:text-5xl font-bold text-white mb-4">
                   {slide.title}
                 </h2>
-                <p className="text-slate-300 mb-6 text-[13px] w-[60%]">{slide.description}</p>
+                <p className="text-slate-300 mb-6 text-[13px] lg:w-[60%]">{slide.description}</p>
                 <div className="flex space-x-3">
                   <button className="bg-[rgba(255,255,255,0.172)] py-2 px-2 pr-4 rounded-full flex justify-between space-x-4 items-center ">
                     <span className="bg-white p-2 rounded-full"><SendIcon/></span>
-                    <span className="text-white font-semibold text-lg">Buyurtma berish</span>
+                    <span className="text-white font-semibold md:text-lg">Buyurtma berish</span>
                   </button>
                   <button className="bg-[rgba(255,255,255,0.172)] py-2 px-2 rounded-full flex justify-between space-x-4 items-center ">
                     <span className="bg-white p-2 rounded-full flex justify-center items-center"><PhoneIcon/></span>

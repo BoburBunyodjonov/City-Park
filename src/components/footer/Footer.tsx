@@ -8,8 +8,8 @@ const Footer = () => {
   return (
     <footer className="bg-[#F8F8F8]">
       <div className="border-b-2 border-[#DFDFDF]">
-        <div className="container mx-auto py-5 flex justify-between items-center">
-          <h1 className="text-xl font-semibold">+90 (534) 267 64 77</h1>
+        <div className="container mx-auto py-5 px-5 flex justify-between items-center">
+          <h1 className="text-md md:text-xl font-semibold">+90 (534) 267 64 77</h1>
           <a href="tel:+998901234567">
             <button className="hover:bg-primary hover:text-white duration-100 border border-primary px-4 py-2 rounded-xl text-primary">
               Menga qo’ng’iroq qiling

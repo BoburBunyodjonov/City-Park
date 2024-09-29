@@ -60,7 +60,7 @@ export default function Navbar() {
           </nav>
 
           {/* Contact Button and Language Select */}
-          <div className="w-full sm:w-auto flex py-3 flex-row sm:flex-row justify-center space-x-2 mt-4 sm:mt-0">
+          <div className="w-full lg:w-auto flex py-3 flex-row justify-center space-x-2 mt-4 sm:mt-0">
             <button className="inline-flex items-center bg-primary text-white border-0 py-2 px-3 focus:outline-none hover:bg-secondary rounded-2xl text-base">
               <Phone size={20} className="mr-2" />
               +90 534 267 64 77
