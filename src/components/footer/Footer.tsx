@@ -2,21 +2,19 @@ import { Link } from "react-router-dom";
 import footerLogo from "../assets/logo (1).svg";
 import { NavLink } from "../navbar/navbar.constants";
 
-import { v4 as uuidv4 } from 'uuid';
-
-
+import { v4 as uuidv4 } from "uuid";
 
 const Footer = () => {
-
-
   return (
     <footer className="bg-[#F8F8F8]">
       <div className="border-b-2 border-[#DFDFDF]">
         <div className="container mx-auto py-5 flex justify-between items-center">
           <h1 className="text-xl font-semibold">+90 (534) 267 64 77</h1>
-          <button className="border border-primary px-4 py-2 rounded-xl text-primary">
-            Menga qo’ng’iroq qiling
-          </button>
+          <a href="tel:+998901234567">
+            <button className="hover:bg-primary hover:text-white duration-100 border border-primary px-4 py-2 rounded-xl text-primary">
+              Menga qo’ng’iroq qiling
+            </button>
+          </a>
         </div>
       </div>
       <div className="container px-5 py-24 mx-auto flex md:items-center md:flex-row md:flex-nowrap flex-wrap flex-col">
@@ -50,11 +48,16 @@ const Footer = () => {
               Bo’limlar
             </h2>
             <nav className="list-none mb-10">
-                {NavLink.map((nav) => (
-                    <li key={uuidv4()}>
-                        <Link to={nav.link} className="text-gray-600 hover:text-gray-800">{nav.title}</Link>
-                   </li>
-                ))}
+              {NavLink.map((nav) => (
+                <li key={uuidv4()}>
+                  <Link
+                    to={nav.link}
+                    className="text-gray-600 hover:text-gray-800"
+                  >
+                    {nav.title}
+                  </Link>
+                </li>
+              ))}
             </nav>
           </div>
           <div className="lg:w-2/4 md:w-2/2 w-full px-4">
@@ -64,15 +67,22 @@ const Footer = () => {
             <nav className="list-none mb-10">
               <li className="text-gray-900 hover:text-gray-800 flex flex-col">
                 <span className="font-bold text-sm">Bizning manzil:</span>
-                <span className="text-[#999999] text-sm"> Yashnobod tumani, st. Istiqbol 45-1. Infinity savdo ofisi</span>
+                <span className="text-[#999999] text-sm">
+                  {" "}
+                  Yashnobod tumani, st. Istiqbol 45-1. Infinity savdo ofisi
+                </span>
               </li>
               <li className="text-gray-900 hover:text-gray-800 flex flex-col">
                 <span className="font-bold text-sm">Mo’ljal:</span>
-                <span className="text-[#999999] text-sm">Sobiq vino zavodi. "Infinity" turar-joy majmuasi</span>
+                <span className="text-[#999999] text-sm">
+                  Sobiq vino zavodi. "Infinity" turar-joy majmuasi
+                </span>
               </li>
               <li className="text-gray-900 hover:text-gray-800 flex flex-col">
                 <span className="font-bold text-sm">Ish vaqti:</span>
-                <span className="text-[#999999] text-sm">Sotuv boʻlimi: Du-Ju: с 9:00 до 19:00 Sh-Ya: с 10:00 до 18:00</span>
+                <span className="text-[#999999] text-sm">
+                  Sotuv boʻlimi: Du-Ju: с 9:00 до 19:00 Sh-Ya: с 10:00 до 18:00
+                </span>
               </li>
             </nav>
           </div>
