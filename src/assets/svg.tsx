@@ -13,6 +13,33 @@ export const SendIcon = () => (
   </svg>
 );
 
+export const PlayIcon = () => (
+  <svg
+    width="21"
+    height="29"
+    viewBox="0 0 21 29"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clip-path="url(#clip0_79_251)">
+      <path
+        d="M4.19644 2.94657C3.40358 2.45907 2.40715 2.443 1.59822 2.89836C0.789292 3.35371 0.285721 4.21086 0.285721 5.143V24.0001C0.285721 24.9323 0.789292 25.7894 1.59822 26.2448C2.40715 26.7001 3.40358 26.6787 4.19644 26.1966L19.625 16.768C20.3911 16.3019 20.8571 15.4716 20.8571 14.5716C20.8571 13.6716 20.3911 12.8466 19.625 12.3751L4.19644 2.94657Z"
+        fill="#20A582"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_79_251">
+        <rect
+          width="20.5714"
+          height="27.4286"
+          fill="white"
+          transform="translate(0.285713 0.857178)"
+        />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
 export const PhoneIcon = () => (
   <svg
     width="18"

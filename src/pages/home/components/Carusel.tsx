@@ -62,6 +62,8 @@ export default function Component() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
     nextArrow: <SampleNextArrow onClick={() => {}} />,
     prevArrow: <SamplePrevArrow onClick={() => {}} />,
     dotsClass: "slick-dots !bottom-[-25px]",
@@ -94,7 +96,7 @@ export default function Component() {
                     <span className="bg-white p-2 rounded-full"><SendIcon/></span>
                     <span className="text-white font-semibold md:text-lg">Buyurtma berish</span>
                   </button>
-                  <button className="bg-[rgba(255,255,255,0.172)] py-2 px-2 rounded-full flex justify-between space-x-4 items-center ">
+                  <button className="bg-[rgba(255,255,255,0.172)] p-2 rounded-full flex justify-between space-x-4 items-center ">
                     <span className="bg-white p-2 rounded-full flex justify-center items-center"><PhoneIcon/></span>
                   </button>
                   {/* <button className="py-2 px-2 pr-4"> */}
