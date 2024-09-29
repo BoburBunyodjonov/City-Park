@@ -1,7 +1,17 @@
+import { About, Contact } from "../../../components"
+import Ipoteka from "../../../components/ipoteka/Ipoteka"
+import CardList from "../components/CardList"
+import Carousel from "../components/Carusel"
 
 const Home = () => {
   return (
-    <div className="">Home</div>
+    <>
+        <Carousel/>
+        <CardList/>
+        <Ipoteka/>
+        <About/>
+        <Contact/>
+    </>
   )
 }
 
