@@ -1,4 +1,4 @@
-import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { MenuItem, Select, TextField } from "@mui/material";
 
 const Contact = () => {
   return (
