@@ -13,10 +13,10 @@ const Contact = () => {
 
             <div className="flex mb-4 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
               <div className="relative w-full">
-                <TextField fullWidth id="outlined-basic" variant="outlined" />
+                <TextField size="small" fullWidth id="outlined-basic" variant="outlined" />
               </div>
               <div className="relative mb-4 w-full">
-                <TextField fullWidth id="outlined-basic" variant="outlined" />
+                <TextField size="small" fullWidth id="outlined-basic" variant="outlined" />
               </div>
             </div>
             <div className="flex mb-4 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -24,6 +24,7 @@ const Contact = () => {
                 <Select
                   fullWidth
                   id="demo-simple-select"
+                  size="small"
                   // value={age}
                   // onChange={handleChange}
                 >
@@ -33,7 +34,7 @@ const Contact = () => {
                 </Select>
               </div>
               <div className="relative mb-4 w-full">
-                <TextField fullWidth id="outlined-basic" variant="outlined" />
+                <TextField size="small" fullWidth id="outlined-basic" variant="outlined" />
               </div>
             </div>
             <div className="relative mb-4">
