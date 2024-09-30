@@ -1,13 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import { Range } from "react-range";
 import { MenuItem, Select } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import { DataType } from "../../../constants/data";
+import { useTranslation } from 'react-i18next';
+import { getApartments } from "../../../firebase/firebaseUtils";
+
+
 const CardList = () => {
+  const { i18n} = useTranslation()
+  const language  = i18n.language as "uz" | "ru" | "tr"
   const [rangeValues, setRangeValues] = useState([0, 200000]);
+  const navigate = useNavigate();
+  const [data, setData] = useState<DataType[]>([]);
 
   const handleRangeChange = (values: number[]) => {
     setRangeValues(values);
   };
+
+  const handlerClickFunc = (id: number) => {
+    navigate(`/details/${id}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apartments = await getApartments();
+        setData(apartments);
+      } catch (error) {
+        console.error("Error fetching apartments data:", error);
+      }
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -101,12 +132,25 @@ const CardList = () => {
         </div>
       </section>
       <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 ">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {data.map((item) => (
+          <Card
+            key={item.id}
+            title={item?.[`title_${language}`] || "No title"}
+            price={item.price || ""}
+            location={item.location}
+            description={item.description || "No description available"}
+            images={item.images || []}
+            rooms={item.rooms || ""}
+            floor={item.floor || ""}
+            onCardClick={() => {
+              if (typeof item.id === "number") {
+                handlerClickFunc(item.id); 
+              } else {
+                console.error("Invalid ID type, expected a number.");
+              }
+            }}
+          />
+        ))}
       </div>
     </>
   );

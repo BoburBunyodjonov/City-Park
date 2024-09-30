@@ -1,37 +1,33 @@
+// src/App.tsx
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
-import RootLayout from "./layout/rootLayout.tsx";
-import Home from "./pages/home/container/Home.tsx";
-import { useTranslation } from 'react-i18next';
-import { loadTranslations } from './i18n/i18next.ts';
-import { useEffect } from "react";
-import Details from "./pages/details/Details.tsx";
+import RootLayout from "./layout/rootLayout";
+import Home from "./pages/home/container/Home";
+import Details from "./pages/details/Details";
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManageUsers from "./pages/admin/ManageUsers";
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/protextedRoute/ProtectedRoute'; // ProtectedRoute import qiling
 
 const App = () => {
-  const { i18n } = useTranslation();
-
-  // Til o'zgartirilganda tarjimalarni yuklash
-  useEffect(() => {
-    const loadTranslationsAsync = async () => {
-      await loadTranslations(i18n.language);
-    };
-
-    loadTranslationsAsync();
-  }, [i18n.language]);
-
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<RootLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/details" element={<Details/>} />
-        <Route path="/contact" element={""} />
+        <Route path="/details/:id" element={<Details />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<AdminDashboard />} />} />
+        <Route path="/admin/manage-users" element={<ProtectedRoute element={<ManageUsers />} />} />
       </Route>
     )
   );
 
   return (
-    <>
+    <AuthProvider>
       <RouterProvider router={routes} />
-    </>
+    </AuthProvider>
   );
 };
 

@@ -74,7 +74,7 @@ export default function CaruselComp() {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="relative h-[450px] overflow-hidden rounded-3xl "
+            className="relative h-[450px] overflow-hidden rounded-3xl"
           >
             <div
               className="w-full h-full bg-cover bg-center"
