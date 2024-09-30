@@ -1,7 +1,13 @@
 import { Contact, Ipoteka } from "../../components";
 
 import Img1 from "../../assets/1.png";
-import Img2 from "../../assets/2.png";
+
+import {
+  AreaIcon,
+  ObjectIcon,
+  FixIcon,
+  AvtoParkingIcon,
+} from "../../assets/svg";
 
 const Details = () => {
   return (
@@ -11,22 +17,22 @@ const Details = () => {
           <img
             src={Img1}
             alt=""
-            className="w-full h-auto lg:h-full object-cover rounded-2xl"
+            className="w-full lg:h-full  h-[400px] rounded-2xl"
           />
         </div>
         <div className="grid grid-rows-2 gap-6">
           <div className="flex justify-center items-center">
             <img
-              src={Img2}
+              src={Img1}
               alt=""
-              className="w-full h-auto object-cover rounded-2xl max-h-[245px] lg:max-h-full"
+              className="w-full  object-cover rounded-xl h-[200px] lg:max-h-full"
             />
           </div>
           <div className="flex justify-center items-center">
             <img
-              src={Img2}
+              src={Img1}
               alt=""
-              className="w-full h-auto object-cover rounded-2xl max-h-[245px] lg:max-h-full"
+              className="w-full  object-cover rounded-xl h-[200px] lg:max-h-full"
             />
           </div>
         </div>
@@ -54,6 +60,52 @@ const Details = () => {
             <button className="px-5 py-3 text-white mt-4 bg-gradient-to-r rounded-2xl from-[#20A582] to-[#123F3C]">
               To’liq katalogni yuklash
             </button>
+          </div>
+        </div>
+      </div>
+      <div className="containe mx-auto grid grid-cols-2 lg:grid-cols-4 justify-center items-center p-5 py-10">
+        <div className="flex items-center space-x-3 p-3 justify-center md:justify-start">
+          <div className="bg-[#D2EDE6] p-3 rounded-xl">
+            <AreaIcon />
+          </div>
+          <div>
+            <span className="text-xs">Maydoni</span>
+            <p className="text-primary font-semibold text-2xl">
+              75 m <sup>2</sup>
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-3 p-3  justify-center md:justify-start">
+          <div className="bg-[#D2EDE6] p-3 rounded-xl">
+            <ObjectIcon />
+          </div>
+          <div>
+            <span className="text-xs">Jihozlari</span>
+            <p className="text-primary font-semibold text-2xl">
+                Mavjud
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-3 p-3  justify-center md:justify-start">
+          <div className="bg-[#D2EDE6] p-3 rounded-xl">
+            <FixIcon />
+          </div>
+          <div>
+            <span className="text-xs">Ta’miri</span>
+            <p className="text-primary font-semibold text-2xl">
+                Mavjud
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-3 p-3  justify-center md:justify-start">
+          <div className="bg-[#D2EDE6] p-3 rounded-xl">
+            <AvtoParkingIcon />
+          </div>
+          <div>
+            <span className="text-xs">Avtomobil maydoni</span>
+            <p className="text-primary font-semibold text-2xl">
+                Mavjud
+            </p>
           </div>
         </div>
       </div>

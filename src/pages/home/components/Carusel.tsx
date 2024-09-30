@@ -4,10 +4,9 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import SliderImg from "../assets/slider-bg.png";
 
-import {SendIcon, PhoneIcon} from "../../../assets/svg"
+import {SendIcon, PhoneIcon, PrevIcon, NextIcon} from "../../../assets/svg"
 
 interface SampleNextArrowProps {
   onClick: () => void; // Required onClick function
@@ -36,10 +35,10 @@ const slides = [
 const SampleNextArrow: React.FC<SampleNextArrowProps> = ({ onClick }) => {
   return (
     <button
-      className="absolute right-4 lg:right-[-50px] top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-300"
+      className="absolute right-0  top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-300"
       onClick={onClick}
     >
-      <ChevronRight className="h-6 w-6 text-gray-600" />
+      <NextIcon/>
     </button>
   );
 };
@@ -47,10 +46,10 @@ const SampleNextArrow: React.FC<SampleNextArrowProps> = ({ onClick }) => {
 const SamplePrevArrow: React.FC<SamplePrevArrowProps> = ({ onClick }) => {
   return (
     <button
-      className="absolute left-4 lg:left-[-50px] top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-300"
+      className="absolute left-0  top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-300"
       onClick={onClick}
     >
-      <ChevronLeft className="h-6 w-6 text-gray-600" />
+      <PrevIcon  />
     </button>
   );
 };

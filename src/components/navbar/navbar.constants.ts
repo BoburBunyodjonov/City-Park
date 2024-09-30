@@ -8,13 +8,14 @@ export const MenuNavLink = [
         title: "Turar joylar",
     },
     {
-        link: "haqida",
-        title: "Kompaniya haqida",
-    },
-    {
         link: "sharhlar",
         title: "Sharhlar",
     },
+    {
+        link: "haqida",
+        title: "Kompaniya haqida",
+    },
+   
     {
         link: "aloqa",
         title: "Aloqa",

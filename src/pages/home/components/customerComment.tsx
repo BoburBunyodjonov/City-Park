@@ -1,11 +1,10 @@
 import { useRef, useState } from "react";
 import Slider from "react-slick";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { PlayIcon } from "../../../assets/svg";
+import { PlayIcon, PrevIcon, NextIcon } from "../../../assets/svg";
 import videoPoster from "../assets/08-Cephe 1.png"
 
 
@@ -36,7 +35,7 @@ const CustomerComment = () => {
         className="absolute right-0  top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-300"
         onClick={onClick}
       >
-        <ChevronRight className="h-6 w-6 text-gray-600" />
+        <NextIcon/>
       </button>
     );
   };
@@ -47,7 +46,7 @@ const CustomerComment = () => {
         className="absolute left-0  top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition duration-300"
         onClick={onClick}
       >
-        <ChevronLeft className="h-6 w-6 text-gray-600" />
+        <PrevIcon />
       </button>
     );
   };
