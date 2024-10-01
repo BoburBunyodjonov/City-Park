@@ -80,8 +80,8 @@ const CardList = () => {
                 )}
               </Select>
             </div>
-            <div className="relative bg-[#F8F8F8] flex-grow w-full rounded border flex flex-col justify-between border-gray-300">
-              <div className="flex justify-between w-full px-5 mt-2">
+            <div className="relative flex-grow w-full rounded border flex flex-col justify-between border-[#0000003B] h-[40px]">
+              <div className="flex-grow flex justify-between items-center w-full px-3">
                 <div className="text-gray-600">
                   <span className="">${rangeValues[0].toLocaleString()}</span>
                 </div>
