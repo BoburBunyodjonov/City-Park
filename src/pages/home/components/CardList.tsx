@@ -1,69 +1,83 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Card from "./Card";
 import { Range } from "react-range";
 import { MenuItem, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { DataType } from "../../../constants/data";
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { getApartments } from "../../../firebase/firebaseUtils";
+import { debounce } from "lodash";
 
+type ApartmentType = "business_center" | "beach" | "standard";
+
+const apartmentTypes: ApartmentType[] = [
+  "business_center",
+  "beach",
+  "standard",
+];
 
 const CardList = () => {
-  // const { i18n} = useTranslation()
-  // const language  = i18n.language as "uz" | "ru" | "tr"
-  const [rangeValues, setRangeValues] = useState([0, 200000]);
-  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  // const language = i18n.language as "uz" | "ru" | "tr";
+  const [rangeValues, setRangeValues] = useState<number[]>([0, 200000]);
+  const [room, setRoom] = useState<number>(2);
+  const [type, setType] = useState<ApartmentType>(apartmentTypes[2]);
   const [data, setData] = useState<DataType[]>([]);
 
   const handleRangeChange = (values: number[]) => {
     setRangeValues(values);
   };
 
-  const handlerClickFunc = (id: number) => {
-    navigate(`/details/${id}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const fetchData = debounce(async () => {
+    try {
+      const apartments = await getApartments({
+        price: rangeValues,
+        room,
+        type,
+      });
+      setData(apartments);
+    } catch (error) {
+      console.error("Error fetching apartments data:", error);
+    }
+  }, 300);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apartments = await getApartments();
-        setData(apartments);
-      } catch (error) {
-        console.error("Error fetching apartments data:", error);
-      }
-    };
     fetchData();
-    const interval = setInterval(fetchData, 30000);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      fetchData.cancel();
+    };
+  }, [rangeValues, room, type]);
 
   return (
     <>
       <section className="text-gray-600 body-font" id="tutar_joylar">
-        <div className="container px-5 py-3 mx-auto">
+        <div className="py-3 mx-auto">
           <div className="flex flex-row justify-between items-center w-full ">
             <h1 className="sm:text-xl text-xl font-semibold title-font mb-4 text-gray-900">
-              Residences in Ikon Park
+              {t("home.residences")}
             </h1>
             <h1 className="sm:text-xl text-xl font-medium title-font mb-4 text-primary">
-              6 ko'rsatkich
+              {t("home.apartments_count", { count: 6 })}
             </h1>
           </div>
-          <div className="flex lg:w-2/3 w-full sm:flex-row flex-col px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 ">
+          <div className="flex lg:w-2/3 w-full sm:flex-row flex-col sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 ">
             <div className="relative flex-grow w-full">
               <Select
                 fullWidth
                 size="small"
                 id="demo-simple-select"
-                // value={age}
-                // onChange={handleChange}
+                value={room}
+                onChange={(e) => setRoom(Number(e.target.value))}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {Array.from({ length: 10 }, (_, index) => index).map(
+                  (index) => (
+                    <MenuItem key={index} value={index + 1}>
+                      {t("home.filter.room", { room: index + 1 })}
+                    </MenuItem>
+                  )
+                )}
               </Select>
             </div>
             <div className="relative bg-[#F8F8F8] flex-grow w-full rounded border flex flex-col justify-between border-gray-300">
@@ -119,34 +133,22 @@ const CardList = () => {
               <Select
                 fullWidth
                 size="small"
-                id="demo-simple-select"
-                // value={age}
-                // onChange={handleChange}
+                value={type}
+                onChange={(e) => setType(e.target.value as ApartmentType)}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {apartmentTypes?.map((type, index) => (
+                  <MenuItem key={index} value={type}>
+                    {t(`home.filter.${type}`)}
+                  </MenuItem>
+                ))}
               </Select>
             </div>
           </div>
         </div>
       </section>
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 ">
+      <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-5">
         {data.map((item) => (
-          <Card
-            key={item.id}
-            img1={item.img1}
-            img2={item.img2}
-            img3={item.img3}
-            title={item?.title || "No title"}
-            price={item.price || ""}
-            location={item.location}
-            description={item.description || "No description available"}
-            images={item.images || []}
-            rooms={item.rooms || ""}
-            floor={item.floor || ""}
-            onCardClick={() => {handlerClickFunc(item.id as number)}}
-          />
+          <Card key={item.id} {...item} />
         ))}
       </div>
     </>

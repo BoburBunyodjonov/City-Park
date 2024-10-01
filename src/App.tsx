@@ -13,6 +13,7 @@ import Register from "./pages/register/Register";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/protextedRoute/ProtectedRoute"; // Ensure the path is correct
+import "./i18n"; // Import i18n configuration
 
 const App = () => {
   const routes = createBrowserRouter(

@@ -1,4 +1,4 @@
-import { Contact, Ipoteka } from "../../components";
+import { Contact, Mortgage } from "../../components";
 // Icons
 import {
   AreaIcon,

@@ -1,17 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        primary: 'var(--color-primary)',
-        secondary: 'var(--color-secondary)',
-        accent: 'var(--color-accent)',
+        primary: "var(--color-primary)",
+        primaryHover: "var(--color-primary-hover)",
+        secondary: "var(--color-secondary)",
+        accent: "var(--color-accent)",
+      },
+    },
+    container: {
+      padding: {
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "4rem",
+        xl: "5rem",
+        "2xl": "6rem",
       },
     },
   },
-  plugins: [],
-}
+  plugins: [require("@tailwindcss/aspect-ratio")],
+};

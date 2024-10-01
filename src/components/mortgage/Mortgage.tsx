@@ -1,14 +1,20 @@
 import { MenuItem, Select, TextField } from "@mui/material";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const Ipoteka = () => {
+const Mortgage = () => {
+  const [apartment, setApartment] = useState<number>(2);
+  const [price, setPrice] = useState<number>(100000);
+  const [initialPayment, setInitialPayment] = useState<number>(15000);
+  const { t } = useTranslation();
   return (
-    <div className="container mx-auto p-5">
-      <h1 className="text-xl font-semibold">Ipoteka</h1>
+    <div className="">
+      <h1 className="text-xl font-semibold">{t("home.mortgage.title")}</h1>
       <div className="flex py-5 gap-5">
         <div className="lg:w-[42%]">
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
-              Xonadoni tanlang
+              {t("home.mortgage.form.select_apartment")}
             </label>
             <Select
               fullWidth
@@ -24,7 +30,7 @@ const Ipoteka = () => {
           </div>
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
-              Narxi
+              {t("home.mortgage.form.price")}
             </label>
             <TextField
               size="small"
@@ -35,7 +41,7 @@ const Ipoteka = () => {
           </div>
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
-              Boshlang'ich to'lov
+              {t("home.mortgage.form.initial_payment")}
             </label>
             <TextField
               size="small"
@@ -88,4 +94,4 @@ const Ipoteka = () => {
   );
 };
 
-export default Ipoteka;
+export default Mortgage;

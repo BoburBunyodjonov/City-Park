@@ -1,21 +1,19 @@
-import { About, Contact, Ipoteka } from "../../../components"
-import CardList from "../components/CardList"
-import CaruselComp from "../components/Carusel"
-import CustomerComment from "../components/customerComment"
+import { About, Contact, Mortgage } from "../../../components";
+import CardList from "../components/CardList";
+import Carousel from "../components/Carousel";
+import CustomerComment from "../components/customerComment";
 
 const Home = () => {
   return (
     <>
-        <CaruselComp/>
-        <CardList/>
-        <Ipoteka/>
-        <CustomerComment/>
-        <About/>
-        <Contact/>
-
-        
+      <Carousel />
+      <CardList />
+      <Mortgage />
+      <CustomerComment />
+      <About />
+      <Contact />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
