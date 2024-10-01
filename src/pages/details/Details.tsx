@@ -14,30 +14,39 @@ import { DataType } from "../../constants/data";
 import { getApartments } from "../../firebase/firebaseUtils";
 
 const Details = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); 
   const [data, setData] = useState<DataType[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apartments = await getApartments();
-        setData(apartments);
+        const apartments = await getApartments(); 
+        setData(apartments); 
+        console.log("Fetched apartments:", apartments); 
       } catch (error) {
         console.error("Error fetching apartments data:", error);
       }
     };
-    fetchData();
-    const interval = setInterval(fetchData, 30000);
 
-    return () => clearInterval(interval);
+    fetchData(); 
   }, []);
 
   if (!data) {
-    return <p>Loading...</p>;
+    return <p>Loading...</p>; 
   }
+
+  console.log("Checking for apartment ID:", id);
+
   const selectedApartment = data.find(
-    (apartment) => apartment?.id ?? "" === id
+    (apartment) => {
+      console.log("Apartment ID:", apartment.id);
+      return apartment.id === id; 
+    }
   );
+
+  if (!selectedApartment) {
+    return <p>No apartment found for this ID.</p>; 
+  }
 
   return (
     <>

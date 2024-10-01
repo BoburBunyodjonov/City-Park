@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Home, Building, Settings, LogOut } from "lucide-react"; // Importing Lucide icons
 import { addApartment } from "../../firebase/firebaseUtils"; // Adjust the import path
 import { uploadFile } from "../../firebase/firebaseUtils"; // Function to upload images
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
+import { firestore } from "../../firebase/firebaseConfig";
 
 const AdminDashboard: React.FC = () => {
   const [apartmentData, setApartmentData] = useState<{
@@ -48,20 +50,40 @@ const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"add" | "manage" | "settings">("add");
   
   const handleAddApartment = async () => {
-    const apartmentId = uuidv4();
-  
+    // Ensure all images are selected
     if (!apartmentData.img1 || !apartmentData.img2 || !apartmentData.img3) {
       alert("Please select all images.");
       return;
     }
   
     try {
+      // Upload the image files
       const img1Url = await uploadFile(apartmentData.img1);
       const img2Url = await uploadFile(apartmentData.img2);
       const img3Url = await uploadFile(apartmentData.img3);
   
+      // Get the current ID from the counter document
+      const counterRef = doc(firestore, "counters", "productCounter");
+      const counterSnap = await getDoc(counterRef);
+  
+      let newId: number;
+  
+      if (counterSnap.exists()) {
+        // Increment the ID and update the counter document
+        newId = counterSnap.data().currentId + 1; // Increment ID
+        await updateDoc(counterRef, {
+          currentId: increment(1),
+        });
+      } else {
+        console.error("Counter document doesn't exist, creating it now.");
+        // If the document doesn't exist, create it with an initial ID of 1
+        newId = 1;
+        await setDoc(counterRef, { currentId: newId });
+      }
+  
+      // Add the apartment using the new ID
       await addApartment({
-        id: apartmentId,  
+        id: newId.toString(), // Store ID as a string
         title: apartmentData.title,
         price: apartmentData.price,
         description: apartmentData.description,
@@ -80,8 +102,9 @@ const AdminDashboard: React.FC = () => {
         floor: apartmentData.floor,
       });
   
+      // Reset the apartment data state
       setApartmentData({
-        id: apartmentId,
+        id: "", // Resetting id field
         title: "",
         price: "",
         description: "",
@@ -100,6 +123,7 @@ const AdminDashboard: React.FC = () => {
         floor: "",
       });
   
+      // Show success snackbar
       setSnackbarOpen(true);
     } catch (error) {
       console.error("Error adding apartment:", error);
