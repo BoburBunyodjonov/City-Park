@@ -4,8 +4,8 @@ const Ipoteka = () => {
   return (
     <div className="container mx-auto p-5">
       <h1 className="text-xl font-semibold">Ipoteka</h1>
-      <div className="grid md:grid-cols-3 py-5 gap-5">
-        <div>
+      <div className="flex py-5 gap-5">
+        <div className="lg:w-[42%]">
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Xonadoni tanlang
@@ -45,7 +45,7 @@ const Ipoteka = () => {
             />
           </div>
         </div>
-        <div className="p-5 bg-[#F8F8F8] rounded-3xl flex flex-col justify-between">
+        <div className="lg:w-[42%] p-5 bg-[#F8F8F8] rounded-3xl flex flex-col justify-between">
           <div className="grid md:grid-cols-2 px-3">
             <div className="py-3">
               <p>Oylik to'lov</p>
@@ -75,10 +75,10 @@ const Ipoteka = () => {
             bo'limiga murojaat qiling +998 (78) 113-04-59
           </p>
         </div>
-        <div className="flex justify-end">
-          <div className="xl:w-3/5 h-full w-full p-5 bg-gradient-to-b from-[#20A582] to-[#123F3C] rounded-3xl flex flex-col justify-around">
+        <div className="lg:w-[16%] flex ">
+          <div className="h-full w-full p-5 bg-gradient-to-b from-[#20A582] to-[#123F3C] rounded-3xl flex flex-col justify-around">
             <p className="text-center text-white">Faqatgina Ikan Parkda</p>
-            <h1 className="text-9xl font-extrabold text-white text-center">
+            <h1 className="text-[11rem] font-extrabold text-white text-center">
               0%
             </h1>
           </div>

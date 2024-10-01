@@ -1,8 +1,7 @@
-// src/pages/register/RegisterAdmin.tsx
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
-import { auth, firestore } from '../../firebase/firebaseConfig'; // Adjust path as necessary
+import { auth, firestore } from '../../firebase/firebaseConfig'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
@@ -30,18 +29,15 @@ const RegisterAdmin: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // Create user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Save the user role in Firestore
       await setDoc(doc(firestore, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
-        role: 'admin', // Set role to admin
+        role: 'admin', 
       });
 
-      // Optionally, clear the form or redirect the user
       console.log('Admin registered successfully:', user.uid);
     } catch (err) {
       setError('Failed to register: ' + (err instanceof Error ? err.message : 'Unknown error'));

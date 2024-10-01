@@ -4,14 +4,13 @@ import { DataType } from "../../../constants/data";
 const Card: React.FC<DataType> = ({
   title,
   price,
-  images,
+  img1,
   location,
   rooms,
   floor,
   currency,
   onCardClick,
 }) => {
-
   return (
     <>
       <div className="relative flex w-full flex-col overflow-hidden rounded-lg group ">
@@ -19,14 +18,16 @@ const Card: React.FC<DataType> = ({
           className="relative mx-5 mt-3 flex h-60 overflow-hidden rounded-xl transition-all duration-300 group-hover:h-48"
           href="#"
         >
-          {images && images.length > 0 ? (
+          {img1 ? (
             <img
               className="object-cover h-full w-full transition-all duration-300 group-hover:h-full"
-              src={images[0]}
+              src={img1}
               alt="product image"
             />
           ) : (
-            <p>No image available</p> 
+            <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+              <p>No image available</p> {/* Placeholder content */}
+            </div>
           )}
           <span className="absolute top-0 left-0 m-2 rounded-md bg-white px-3 py-1 text-center text-sm font-medium text-primary">
             Ipoteka
@@ -38,7 +39,7 @@ const Card: React.FC<DataType> = ({
         <div className="mt-4 px-5 pb-5">
           <div className="flex items-center justify-between">
             <span className="text-[#BABABA]">Turar joy majmuasi</span>
-            <span className="text-[#BABABA]">{floor}</span>
+            <span className="text-[#BABABA]">{floor} qavat</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-lg font-semibold text-slate-900">

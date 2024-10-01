@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -27,27 +27,35 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      navigate('/dashboard'); 
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(''); 
-  
+    setError('');
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
+
       const userDoc = await getDoc(doc(firestore, 'users', user.uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
         if (userData.role === 'admin') {
-          navigate('/dashboard'); 
+          localStorage.setItem('authToken', user.uid);
+          navigate('/dashboard');
         } else {
-          setError('You do not have permission to access this area.'); 
+          setError('You do not have permission to access this area.');
         }
       } else {
         setError('User not found.');
       }
     } catch {
-        setError('Invalid email or password');
+      setError('Invalid email or password');
     }
   };
 
@@ -82,7 +90,6 @@ const Login: React.FC = () => {
           <button
             type="submit"
             className="w-full bg-primary text-white py-2 rounded-lg text-xl"
-
           >
             Login
           </button>

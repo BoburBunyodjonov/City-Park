@@ -5,13 +5,13 @@ import { MenuItem, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { DataType } from "../../../constants/data";
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { getApartments } from "../../../firebase/firebaseUtils";
 
 
 const CardList = () => {
-  const { i18n} = useTranslation()
-  const language  = i18n.language as "uz" | "ru" | "tr"
+  // const { i18n} = useTranslation()
+  // const language  = i18n.language as "uz" | "ru" | "tr"
   const [rangeValues, setRangeValues] = useState([0, 200000]);
   const navigate = useNavigate();
   const [data, setData] = useState<DataType[]>([]);
@@ -135,20 +135,17 @@ const CardList = () => {
         {data.map((item) => (
           <Card
             key={item.id}
-            title={item?.[`title_${language}`] || "No title"}
+            img1={item.img1}
+            img2={item.img2}
+            img3={item.img3}
+            title={item?.title || "No title"}
             price={item.price || ""}
             location={item.location}
             description={item.description || "No description available"}
             images={item.images || []}
             rooms={item.rooms || ""}
             floor={item.floor || ""}
-            onCardClick={() => {
-              if (typeof item.id === "number") {
-                handlerClickFunc(item.id); 
-              } else {
-                console.error("Invalid ID type, expected a number.");
-              }
-            }}
+            onCardClick={() => {handlerClickFunc(item.id as number)}}
           />
         ))}
       </div>

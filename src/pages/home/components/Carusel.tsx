@@ -9,11 +9,11 @@ import SliderImg from "../assets/slider-bg.png";
 import {SendIcon, PhoneIcon, PrevIcon, NextIcon} from "../../../assets/svg"
 
 interface SampleNextArrowProps {
-  onClick: () => void; // Required onClick function
+  onClick: () => void; 
 }
 
 interface SamplePrevArrowProps {
-  onClick: () => void; // Required onClick function
+  onClick: () => void; 
 }
 
 const slides = [
