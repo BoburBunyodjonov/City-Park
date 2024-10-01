@@ -142,7 +142,6 @@ const CardList = () => {
             price={item.price || ""}
             location={item.location}
             description={item.description || "No description available"}
-            images={item.images || []}
             rooms={item.rooms || ""}
             floor={item.floor || ""}
             onCardClick={() => {handlerClickFunc(item.id as number)}}

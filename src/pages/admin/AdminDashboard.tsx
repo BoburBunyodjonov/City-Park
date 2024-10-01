@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Home, Building, Settings, LogOut } from "lucide-react"; // Importing Lucide icons
-import { addApartment } from "../../firebase/firebaseUtils"; // Adjust the import path
-import { uploadFile } from "../../firebase/firebaseUtils"; // Function to upload images
+import { Home, Building, Settings, LogOut } from "lucide-react"; 
+import { addApartment } from "../../firebase/firebaseUtils";
+import { uploadFile } from "../../firebase/firebaseUtils"; 
 // import { v4 as uuidv4 } from "uuid";
 import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebaseConfig";
+import DashboardTable from "./DashboardTable";
 
 const AdminDashboard: React.FC = () => {
   const [apartmentData, setApartmentData] = useState<{
@@ -50,40 +51,34 @@ const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"add" | "manage" | "settings">("add");
   
   const handleAddApartment = async () => {
-    // Ensure all images are selected
     if (!apartmentData.img1 || !apartmentData.img2 || !apartmentData.img3) {
       alert("Please select all images.");
       return;
     }
   
     try {
-      // Upload the image files
       const img1Url = await uploadFile(apartmentData.img1);
       const img2Url = await uploadFile(apartmentData.img2);
       const img3Url = await uploadFile(apartmentData.img3);
   
-      // Get the current ID from the counter document
       const counterRef = doc(firestore, "counters", "productCounter");
       const counterSnap = await getDoc(counterRef);
   
       let newId: number;
   
       if (counterSnap.exists()) {
-        // Increment the ID and update the counter document
-        newId = counterSnap.data().currentId + 1; // Increment ID
+        newId = counterSnap.data().currentId + 1; 
         await updateDoc(counterRef, {
           currentId: increment(1),
         });
       } else {
         console.error("Counter document doesn't exist, creating it now.");
-        // If the document doesn't exist, create it with an initial ID of 1
         newId = 1;
         await setDoc(counterRef, { currentId: newId });
       }
   
-      // Add the apartment using the new ID
       await addApartment({
-        id: newId.toString(), // Store ID as a string
+        id: newId.toString(), 
         title: apartmentData.title,
         price: apartmentData.price,
         description: apartmentData.description,
@@ -102,9 +97,8 @@ const AdminDashboard: React.FC = () => {
         floor: apartmentData.floor,
       });
   
-      // Reset the apartment data state
       setApartmentData({
-        id: "", // Resetting id field
+        id: "", 
         title: "",
         price: "",
         description: "",
@@ -208,6 +202,9 @@ const AdminDashboard: React.FC = () => {
       <div className="flex-1 p-6 overflow-y-auto">
         {activeTab === "add" && (
           <>
+
+            <DashboardTable/>
+
             <h1 className="text-3xl font-bold mb-6">Add Apartment</h1>
             <div className="grid grid-cols-3 gap-3">
               <TextField

@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
 import { firestore, storage } from './firebaseConfig';
 import { DataType } from '../constants/data'; 
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -10,7 +10,7 @@ export const getApartments = async (): Promise<DataType[]> => {
   const apartmentsList = snapshot.docs.map(doc => ({ 
     id: doc.id, 
     ...doc.data() 
-  })) as DataType[];
+  })) as unknown as DataType[]; 
 
   return apartmentsList;
 };
@@ -22,6 +22,7 @@ export const addApartment = async (apartmentData: DataType): Promise<void> => {
     console.log('Apartment added successfully:', apartmentData);
   } catch (error) {
     console.error('Error adding apartment:', error);
+    throw error; 
   }
 };
 
@@ -34,5 +35,29 @@ export const uploadFile = async (file: File): Promise<string> => {
   } catch (error) {
     console.error("Error uploading file: ", error);
     throw error;
+  }
+};
+
+export const deleteApartment = async (id: string): Promise<void> => {
+  try {
+    const apartmentRef = doc(firestore, 'apartments', id);
+    await deleteDoc(apartmentRef);
+    console.log(`Successfully deleted apartment with ID: ${id}`);
+  } catch (error) {
+    console.error('Error deleting apartment:', error);
+    throw error; 
+  }
+};
+
+export const updateApartment = async (
+  id: string,
+  data: DataType
+): Promise<void> => {
+  try {
+    const apartmentRef = doc(firestore, 'apartments', id);
+    await setDoc(apartmentRef, data, { merge: true });
+  } catch (error) {
+    console.error('Error updating apartment:', error);
+    throw error; 
   }
 };
