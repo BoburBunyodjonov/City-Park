@@ -38,7 +38,7 @@ import DashboardTable from "./DashboardTable";
 import { DataType } from "../../constants/data";
 import BannerAdd from "./BannerAdd";
 import CommitAdd from "./CommitAdd";
-import { Cancel, Comment } from "@mui/icons-material";
+import { Cancel, Close, Comment } from "@mui/icons-material";
 import ContactTable from "./ContactTable";
 
 const AdminDashboard: React.FC = () => {
@@ -283,29 +283,23 @@ const AdminDashboard: React.FC = () => {
               fullScreen
             >
               <AppBar sx={{ position: "relative" }}>
-                <Toolbar>
+                <Toolbar className="flex justify-between items-center">
+                  <Typography variant="h6" component="div">
+                    Add Apartment
+                  </Typography>
                   <IconButton
                     edge="start"
-                    color="primary"
                     onClick={() => setAddModalOpen(false)}
                     aria-label="close"
                   >
-                    <Cancel />
+                    <Close className="text-white" />
                   </IconButton>
-                  <Typography
-                    sx={{ ml: 2, flex: 1 }}
-                    variant="h6"
-                    component="div"
-                  >
-                    Add Apartment
-                  </Typography>
                 </Toolbar>
               </AppBar>
-              <DialogTitle>Edit Apartment</DialogTitle>
               <DialogContent>
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-4 p-3  gap-3">
                   <TextField
-                    id="outlined-basic"
+                    required
                     type="text"
                     name="title_uz"
                     placeholder="Nomi"
@@ -315,7 +309,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
-                    id="outlined-basic"
+                    required
                     type="text"
                     name="title_ru"
                     placeholder="Nomi"
@@ -325,7 +319,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
-                    id="outlined-basic"
+                    required
                     type="text"
                     name="title_tr"
                     placeholder="Nomi"
@@ -335,7 +329,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
-                    id="outlined-basic"
+                    required
                     type="text"
                     name="title_ae"
                     placeholder="Nomi"
@@ -345,6 +339,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
+                    required
                     type="text"
                     name="location_uz"
                     placeholder="Joylashuv (Lakatsiya) Uzbekcha"
@@ -354,6 +349,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
+                    required
                     type="text"
                     name="location_ru"
                     placeholder="Joylashuv (Lakatsiya) Ruscha"
@@ -364,6 +360,7 @@ const AdminDashboard: React.FC = () => {
                   />
 
                   <TextField
+                    required
                     type="text"
                     name="location_tr"
                     placeholder="Joylashuv (Lakatsiya) Turchka"
@@ -373,6 +370,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
+                    required
                     type="text"
                     name="location_ae"
                     placeholder="Joylashuv (Lakatsiya) Arabcha"
@@ -410,6 +408,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
+                    required
                     type="text"
                     name="price"
                     placeholder="Narxi"
@@ -419,6 +418,7 @@ const AdminDashboard: React.FC = () => {
                     onChange={handleInputChange}
                   />
                   <TextField
+                    required
                     type="text"
                     name="rooms"
                     placeholder="Xona soni"
@@ -429,6 +429,7 @@ const AdminDashboard: React.FC = () => {
                   />
 
                   <TextField
+                    required
                     type="text"
                     name="area"
                     placeholder="Maydoni"
@@ -439,6 +440,7 @@ const AdminDashboard: React.FC = () => {
                   />
 
                   <TextField
+                    required
                     type="text"
                     label="Qavati"
                     name="floor"
@@ -467,8 +469,19 @@ const AdminDashboard: React.FC = () => {
                     className="border border-gray-300 rounded p-3 w-full mb-4"
                   />
 
+                  <Select
+                    id="demo-simple-select"
+                    name="type"
+                    size="small"
+                    onChange={handleSelectChange}
+                    value={apartmentData.type || ""}
+                  >
+                    <MenuItem value={"business_center"}>Biznes Senter</MenuItem>
+                    <MenuItem value={"beach"}>Beach</MenuItem>
+                    <MenuItem value={"standard"}>Standard</MenuItem>
+                  </Select>
+
                   <div className="flex flex-col">
-                    <label htmlFor="">Mortgage</label>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -482,7 +495,6 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="">Jihozlar</label>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -496,7 +508,6 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="">Ta'mir</label>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -511,7 +522,6 @@ const AdminDashboard: React.FC = () => {
                   </div>
 
                   <div className="flex flex-col">
-                    <label htmlFor="">Avto Turargon</label>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -524,28 +534,17 @@ const AdminDashboard: React.FC = () => {
                       label="Avto turargon mavjud"
                     />
                   </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="">Turi</label>
-                    <Select
-                      id="demo-simple-select"
-                      name="type"
-                      onChange={handleSelectChange}
-                      value={apartmentData.type || ""}
-                    >
-                      <MenuItem value={"business_center"}>
-                        Biznes Senter
-                      </MenuItem>
-                      <MenuItem value={"beach"}>Beach</MenuItem>
-                      <MenuItem value={"standard"}>Standard</MenuItem>
-                    </Select>
-                  </div>
                 </div>
-                <button
+                <Button
+                  fullWidth
+                  variant="contained"
+                  className="bg-primary py-4"
+                  style={{ backgroundColor: "#1EA582" }}
                   onClick={handleAddApartment}
-                  className="bg-blue-600 text-white rounded p-3 w-full hover:bg-blue-700 transition"
+                  sx={{ marginTop: "50px" }}
                 >
-                  Kvartira qo'shish
-                </button>
+                  Add Apartment
+                </Button>
               </DialogContent>
               {/* <DialogActions>
                 <Button onClick={handleEditClose}>Cancel</Button>
