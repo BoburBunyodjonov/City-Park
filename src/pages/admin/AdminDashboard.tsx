@@ -232,7 +232,7 @@ const AdminDashboard: React.FC = () => {
             onClick={() => setActiveTab("settings")}
           >
             <Settings className="mr-2" />
-            <span>Settings</span>
+            <span>Comments</span>
           </li>
           {/* <li className="flex cursor-pointer items-center p-2 mb-2 hover:bg-secondary rounded transition-colors">
             <LogOut className="mr-2" />

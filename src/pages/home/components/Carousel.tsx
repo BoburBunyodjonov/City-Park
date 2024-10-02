@@ -1,10 +1,9 @@
-"use client";
 
 import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
+import Slider, { Settings } from "react-slick"; 
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { firestore } from "../../../firebase/firebaseConfig"; // Import Firestore
+import { firestore } from "../../../firebase/firebaseConfig"; 
 import { collection, getDocs } from "firebase/firestore";
 import { NextIcon, PrevIcon } from "../../../assets/svg";
 
@@ -14,10 +13,9 @@ interface ArrowProps {
 
 interface Slide {
   id: string;
-  url: string; // Assuming your image object has a 'url' field
+  url: string; 
 }
 
-// Next Arrow Component
 const SampleNextArrow: React.FC<ArrowProps> = ({ onClick }) => {
   return (
     <button
@@ -29,7 +27,6 @@ const SampleNextArrow: React.FC<ArrowProps> = ({ onClick }) => {
   );
 };
 
-// Previous Arrow Component
 const SamplePrevArrow: React.FC<ArrowProps> = ({ onClick }) => {
   return (
     <button
@@ -41,17 +38,16 @@ const SamplePrevArrow: React.FC<ArrowProps> = ({ onClick }) => {
   );
 };
 
-// Carousel Component
 export default function Carousel() {
   const [slides, setSlides] = useState<Slide[]>([]);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "banners")); // Fetch images from Firestore
+        const querySnapshot = await getDocs(collection(firestore, "banners")); 
         const fetchedSlides: Slide[] = querySnapshot.docs.map(doc => ({
           id: doc.id,
-          url: doc.data().url, // Assuming your image document has a 'url' field
+          url: doc.data().url, 
         }));
         setSlides(fetchedSlides);
       } catch (error) {
@@ -62,16 +58,16 @@ export default function Carousel() {
     fetchImages();
   }, []);
 
-  const settings = {
-    dots: true,
-    infinite: true,
+  const settings: Settings = {
+    dots: slides.length > 1, 
+    infinite: slides.length > 1, 
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: slides.length > 1,
     autoplaySpeed: 2000,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    nextArrow: slides.length > 1 ? <SampleNextArrow /> : undefined, 
+    prevArrow: slides.length > 1 ? <SamplePrevArrow /> : undefined, 
   };
 
   return (
@@ -80,8 +76,8 @@ export default function Carousel() {
         {slides.map(slide => (
           <img
             key={slide.id}
-            src={slide.url} // Use the image URL from Firestore
-            alt={`Slide ${slide.id}`} // Add alt text for accessibility
+            src={slide.url} 
+            alt={`Slide ${slide.id}`} 
             className="w-full h-[250px] object-cover sm:h-[400px] lg:h-[600px]"
           />
         ))}
