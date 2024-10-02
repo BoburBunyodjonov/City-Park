@@ -33,7 +33,7 @@ const Reviews: React.FC = () => {
   return (
     <div
       className="bg-[#20A58233] py-10 px-5 pb-0 my-[5rem] rounded-3xl"
-      id="sharhlar"
+      id="reviews"
     >
       <h1 className="text-center text-3xl text-secondary font-bold mb-10">
         {t("home.reviews.title")}

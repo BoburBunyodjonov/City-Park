@@ -1,10 +1,13 @@
-import { MenuItem, Select, SelectChangeEvent, TextField, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import useHomeContext from "../../pages/home/services/homeContext";
+import { Send } from "@mui/icons-material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { memo, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useHomeContext from "../../pages/home/services/homeContext";
 
 const Contact = () => {
   const { t, i18n } = useTranslation();
@@ -37,7 +40,7 @@ const Contact = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
 
     try {
       const db = getFirestore();
@@ -49,29 +52,29 @@ const Contact = () => {
         apartmentId: apartment,
         timestamp: new Date(),
       });
-      setLoading(false); 
-      toast.success("Form submitted successfully!");
-      
+      setLoading(false);
+      toast.success(t("home.contact.form.success"));
+
       setFirstName("");
       setLastName("");
       setPhone("");
       setMessage("");
       setApartment(data?.[0]?.id || "");
     } catch (error) {
-      setLoading(false); 
+      setLoading(false);
       console.error("Error adding document: ", error);
-      toast.error("Error submitting the form!");
+      toast.success(t("home.contact.form.error"));
     }
   };
 
   return (
     <>
-      <section className="text-gray-600 body-font relative" id="aloqa">
-        <div className="container px-5 py-24 mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="bg-white flex flex-col w-full md:py-8 mt-8 p-5 rounded-lg">
-            <h2 className="text-gray-900 text-lg mb-1 font-medium title-font">
-              Biz bilan bog'lanish
-            </h2>
+      <section className="text-gray-600 body-font" id="contact">
+        <div className="py-24 mx-auto grid grid-cols-1 md:grid-cols-2 gap-7">
+          <div className="flex flex-col w-full">
+            <h1 className="text-black text-2xl mb-5 font-bold">
+              {t("home.contact.title")}
+            </h1>
 
             <form onSubmit={handleSubmit}>
               <div className="flex mb-4 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -79,9 +82,8 @@ const Contact = () => {
                   <TextField
                     size="small"
                     fullWidth
-                    id="first-name"
                     variant="outlined"
-                    placeholder="First name"
+                    placeholder={t("home.contact.form.first_name")}
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
@@ -91,9 +93,8 @@ const Contact = () => {
                   <TextField
                     size="small"
                     fullWidth
-                    id="last-name"
                     variant="outlined"
-                    placeholder="Last name"
+                    placeholder={t("home.contact.form.last_name")}
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
@@ -105,7 +106,7 @@ const Contact = () => {
                   <Select
                     fullWidth
                     size="small"
-                    id="apartment-select"
+                    placeholder={t("home.contact.form.apartment")}
                     value={apartment}
                     onChange={handleChangeApartment}
                     required
@@ -121,9 +122,8 @@ const Contact = () => {
                   <TextField
                     size="small"
                     fullWidth
-                    id="phone"
                     variant="outlined"
-                    placeholder="Phone Number"
+                    placeholder={t("home.contact.form.phone_number")}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required
@@ -131,47 +131,46 @@ const Contact = () => {
                 </div>
               </div>
               <div className="relative mb-4">
-                <textarea
-                  placeholder="Izoh"
-                  id="message"
-                  name="message"
-                  className="w-full bg-white rounded border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                <TextField
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  placeholder={t("home.contact.form.note")}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
-                ></textarea>
+                  multiline
+                  rows={4}
+                />
               </div>
-              <button
+              <LoadingButton
+                variant="contained"
                 type="submit"
-                className="text-white bg-primary border-0 py-2 px-6 focus:outline-none hover:bg-secondary rounded text-lg"
-                disabled={loading}
+                endIcon={<Send />}
+                loading={loading}
+                loadingPosition="end"
               >
-                {loading ? <CircularProgress size={24} /> : "Yuborish"}
-              </button>
+                {t("home.contact.form.submit")}
+              </LoadingButton>
             </form>
           </div>
-
-          <div className="rounded-lg overflow-hidden p-5 flex items-center justify-center relative">
-            <div
-              className="relative w-full"
-              style={{ paddingBottom: "56.25%" }}
+          <YMaps>
+            <Map
+              width={"100%"}
+              height={"100%"}
+              className="rounded-3xl overflow-hidden"
+              defaultState={{
+                center: [55.684758, 37.738521],
+                zoom: 11,
+              }}
             >
-              <iframe
-                width="100%"
-                height="100%"
-                className="absolute inset-0"
-                title="Google Map"
-                src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=Toshken city, Magic city&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                frameBorder="0"
-                allowFullScreen
-                style={{ border: 0 }}
-              ></iframe>
-            </div>
-          </div>
+              <Placemark geometry={[55.684758, 37.738521]} />
+            </Map>
+          </YMaps>
         </div>
       </section>
     </>
   );
 };
 
-export default Contact;
+export default memo(Contact);

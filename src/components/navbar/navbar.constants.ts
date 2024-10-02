@@ -1,23 +1,23 @@
 export const MenuNavLink = [
-    {
-        link: "/",
-        title: "Bosh sahifa",
-    },
-    {
-        link: "tutar_joylar",
-        title: "Turar joylar",
-    },
-    {
-        link: "sharhlar",
-        title: "Sharhlar",
-    },
-    {
-        link: "haqida",
-        title: "Kompaniya haqida",
-    },
-   
-    {
-        link: "aloqa",
-        title: "Aloqa",
-    }
-]
+  {
+    link: "",
+    title: "navbar.home",
+  },
+  {
+    link: "apartments",
+    title: "navbar.apartments",
+  },
+  {
+    link: "reviews",
+    title: "navbar.reviews",
+  },
+  {
+    link: "about",
+    title: "navbar.about",
+  },
+
+  {
+    link: "contact",
+    title: "navbar.contact",
+  },
+];

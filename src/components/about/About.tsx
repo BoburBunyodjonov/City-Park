@@ -6,8 +6,11 @@ const About = () => {
   const { t } = useTranslation();
   return (
     <>
-      <section className="text-gray-600 body-font" id="haqida">
-        <div className="grid lg:grid-cols-2 gap-7 my-10">
+      <section className="text-gray-600 body-font" id="about">
+        <h1 className="text-black text-2xl mb-5 font-bold">
+          {t("home.about.title")}
+        </h1>
+        <div className="grid lg:grid-cols-2 gap-7 my-10 mt-5">
           <div className="">
             <img
               className="object-cover object-center rounded-3xl h-full"

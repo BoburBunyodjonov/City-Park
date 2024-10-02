@@ -45,7 +45,7 @@ const Mortgage = () => {
   }, [apartment, price, initialPayment]);
 
   return (
-    <div className="">
+    <div className="my-10">
       <h1 className="text-xl font-semibold">{t("home.mortgage.title")}</h1>
       <div className="flex flex-col flex-wrap content-stretch py-5 gap-5 lg:flex-row">
         <div className="lg:w-[calc(50%-0.75rem)] xl:w-[calc((100%-250px)/2)]">

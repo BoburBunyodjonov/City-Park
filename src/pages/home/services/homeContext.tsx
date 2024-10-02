@@ -9,6 +9,7 @@ import React, {
 import { getApartments } from "../../../firebase/firebaseUtils";
 import { DataType } from "../../../constants/data";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { firestore } from "../../../firebase/firebaseConfig";
 
 export type ApartmentType = "business_center" | "beach" | "standard";
 
@@ -18,7 +19,14 @@ const apartmentTypes: ApartmentType[] = [
   "standard",
 ];
 
+interface Slide {
+  id: string;
+  url: string;
+}
+
 const Context = () => {
+  const [slides, setSlides] = useState<Slide[]>([]);
+
   const [rangeValues, setRangeValues] = useState<number[]>([0, 200000]);
   const [room, setRoom] = useState<number>(2);
   const [type, setType] = useState<ApartmentType>(apartmentTypes[2]);
@@ -66,15 +74,29 @@ const Context = () => {
     }
   };
 
+  const fetchBanner = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(firestore, "banners"));
+      const fetchedSlides: Slide[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        url: doc.data().url,
+      }));
+      setSlides(fetchedSlides);
+    } catch (error) {
+      console.error("Error fetching images: ", error);
+    }
+  };
+
   useEffect(() => {}, [rangeValues, room, type]);
 
   useEffect(() => {
+    fetchBanner();
     fetchApartments();
     fetchReviews();
   }, []);
 
   return {
-    state: { data, rangeValues, room, type, apartmentTypes, reviews },
+    state: { data, rangeValues, room, type, apartmentTypes, reviews, slides },
     actions: { handleRangeChange, setRoom, setType },
   };
 };

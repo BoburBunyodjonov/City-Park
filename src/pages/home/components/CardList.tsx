@@ -14,11 +14,11 @@ const CardList = () => {
     actions: { handleRangeChange, setRoom, setType },
   } = useHomeContext();
 
-  console.log(data)
+  console.log(data);
 
   return (
     <>
-      <section className="text-gray-600 body-font" id="tutar_joylar">
+      <section className="text-gray-600 body-font mt-10" id="apartments">
         <div className="py-3 mx-auto">
           <div className="flex flex-row justify-between items-center w-full ">
             <h1 className="sm:text-xl text-xl font-semibold title-font mb-4 text-gray-900">
@@ -116,7 +116,7 @@ const CardList = () => {
           </div>
         </div>
       </section>
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-7 mb-10">
         {data.map((item) => (
           <Card key={item.id} {...item} />
         ))}

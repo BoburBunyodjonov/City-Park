@@ -1,19 +1,61 @@
-// src/App.tsx
+import { createTheme, ThemeProvider } from "@mui/material";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  RouterProvider,
   Route,
+  RouterProvider,
 } from "react-router-dom";
+import { Flip, ToastContainer } from "react-toastify";
+import ProtectedRoute from "./components/protextedRoute/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
+import "./i18n";
 import RootLayout from "./layout/rootLayout";
-import Home from "./pages/home/container";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import Details from "./pages/details/Details";
+import Home from "./pages/home/container";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/protextedRoute/ProtectedRoute"; // Ensure the path is correct
-import "./i18n"; // Import i18n configuration
+
+let theme = createTheme({
+  palette: {
+    primary: {
+      main: "#20a582",
+    },
+    // secondary: {
+    //   main: "#edf2ff",
+    // },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "10px", // Adjust for Button
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          borderRadius: "10px", // Adjust for TextField
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: "10px", // Adjust for OutlinedInput
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          borderRadius: "10px", // Adjust for Select
+        },
+      },
+    },
+  },
+});
 
 const App = () => {
   const routes = createBrowserRouter(
@@ -35,7 +77,22 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <RouterProvider router={routes} />
+      <ThemeProvider theme={theme}>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Flip}
+        />
+        <RouterProvider router={routes} />
+      </ThemeProvider>
     </AuthProvider>
   );
 };

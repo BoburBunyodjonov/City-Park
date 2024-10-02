@@ -1,19 +1,12 @@
-
-import React, { useEffect, useState } from "react";
-import Slider, { Settings } from "react-slick"; 
+import React, { useMemo } from "react";
+import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { firestore } from "../../../firebase/firebaseConfig"; 
-import { collection, getDocs } from "firebase/firestore";
 import { NextIcon, PrevIcon } from "../../../assets/svg";
+import useHomeContext from "../services/homeContext";
 
 interface ArrowProps {
   onClick?: () => void;
-}
-
-interface Slide {
-  id: string;
-  url: string; 
 }
 
 const SampleNextArrow: React.FC<ArrowProps> = ({ onClick }) => {
@@ -39,45 +32,33 @@ const SamplePrevArrow: React.FC<ArrowProps> = ({ onClick }) => {
 };
 
 export default function Carousel() {
-  const [slides, setSlides] = useState<Slide[]>([]);
+  const {
+    state: { slides },
+  } = useHomeContext();
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(firestore, "banners")); 
-        const fetchedSlides: Slide[] = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          url: doc.data().url, 
-        }));
-        setSlides(fetchedSlides);
-      } catch (error) {
-        console.error("Error fetching images: ", error);
-      }
-    };
-
-    fetchImages();
-  }, []);
-
-  const settings: Settings = {
-    dots: slides.length > 1, 
-    infinite: slides.length > 1, 
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: slides.length > 1,
-    autoplaySpeed: 2000,
-    nextArrow: slides.length > 1 ? <SampleNextArrow /> : undefined, 
-    prevArrow: slides.length > 1 ? <SamplePrevArrow /> : undefined, 
-  };
+  const settings: Settings = useMemo(
+    () => ({
+      dots: slides.length > 1,
+      infinite: slides.length > 1,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: slides.length > 1,
+      autoplaySpeed: 2000,
+      nextArrow: slides.length > 1 ? <SampleNextArrow /> : undefined,
+      prevArrow: slides.length > 1 ? <SamplePrevArrow /> : undefined,
+    }),
+    [slides]
+  );
 
   return (
-    <div className="w-full my-5 h-auto" id="home">
+    <div className="w-full my-10 h-auto" id="home">
       <Slider {...settings} className="rounded-3xl overflow-hidden">
-        {slides.map(slide => (
+        {slides.map((slide) => (
           <img
             key={slide.id}
-            src={slide.url} 
-            alt={`Slide ${slide.id}`} 
+            src={slide.url}
+            alt={`Slide ${slide.id}`}
             className="w-full h-[250px] object-cover sm:h-[400px] lg:h-[600px]"
           />
         ))}
