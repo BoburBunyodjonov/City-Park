@@ -7,7 +7,7 @@ import { format } from "../../../utils/format";
 
 const CardList = () => {
   const { t, i18n } = useTranslation();
-  const language = i18n.language as "uz" | "ru" | "tr";
+  const language = i18n.language as "uz" | "ru" | "tr" | "ae";
 
   const {
     state: { room, type, rangeValues, data, apartmentTypes },

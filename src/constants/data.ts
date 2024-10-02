@@ -1,5 +1,5 @@
 export interface DataType {
-  id: number | string;
+  id: string;
   title_uz: string;
   title_ru: string;
   title_tr: string;
@@ -7,7 +7,7 @@ export interface DataType {
   img1: File | null;
   img2: File | null;
   img3: File | null;
-  price: string;
+  price: number;
   description_uz: string;
   description_ru: string;
   description_tr: string;
