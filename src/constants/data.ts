@@ -1,5 +1,5 @@
 export interface DataType {
-  id: string;
+  id?: string;
   title_uz: string;
   title_ru: string;
   title_tr: string;
