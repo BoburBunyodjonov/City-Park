@@ -29,6 +29,7 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChangeEvent, useEffect, useState } from "react";
+import { Delete, Edit } from "@mui/icons-material";
 
 // Image interface
 export interface Image {
@@ -195,22 +196,13 @@ const BannerAdd: React.FC = () => {
                 </TableCell>
                 <TableCell>{image.name}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => handleEdit(image)}
-                  >
-                    Edit
-                  </Button>
+                  <Edit className="text-blue-500 cursor-pointer" onClick={() => handleEdit(image)} />
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="error"
+                  <Delete
+                    className="text-red-500 cursor-pointer"
                     onClick={() => handleDelete(image.id)}
-                  >
-                    Delete
-                  </Button>
+                  />
                 </TableCell>
               </TableRow>
             ))}

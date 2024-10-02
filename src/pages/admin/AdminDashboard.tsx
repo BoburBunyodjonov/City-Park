@@ -273,13 +273,13 @@ const AdminDashboard: React.FC = () => {
 
             <DashboardTable />
 
-            <Dialog open={addModalOpen} onClose={() => setAddModalOpen(false)}>
+            <Dialog open={addModalOpen} onClose={() => setAddModalOpen(false)} className="w-[1000px]">
               <DialogTitle>Edit Apartment</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   To update this apartment, please enter the new details below.
                 </DialogContentText>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-4 gap-3 w-full">
                   <TextField
                     id="outlined-basic"
                     type="text"
