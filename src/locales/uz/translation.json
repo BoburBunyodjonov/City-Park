@@ -29,6 +29,12 @@
             "duration":"{{year}} yil",
             "description": "Tijorat ipotekani qanday olish mumkin, iltimos, telefon orqali savdo bo'limiga murojaat qiling {{phone}}",
             "only_with_us": "Faqatgina Ikan Parkda"
+        },
+        "reviews":{
+            "title":"Mijozlar Fikri"
+        },
+        "about":{
+            "description":"Ikan Park — bu Turkiyada joylashgan zamonaviy, hashamatli va barqaror yashash joylarini yaratishga ixtisoslashgan yetakchi ko‘p qavatli uy qurilish kompaniyasi. Bizning maqsadimiz — rezidentlarga qulaylik, dizayn va funksionallikni o‘zida mujassam etgan yuqori sifatli uylarni taqdim etishdir. Ikan Park kvartiralari innovatsion arxitekturasi, ekologik toza qurilish materiallari va zamonaviy qulayliklari bilan mashhur, jumladan, fitness markazlari, yashil hududlar va 24/7 xavfsizlik tizimiga ega.\n\nBiz ko‘chmas mulk sohasidagi ishonchli brend sifatida har bir rezident o‘zini uyda his qilishi uchun yuqori darajadagi mijozlarga xizmat ko‘rsatishni taklif qilamiz. Ikan Park Turkiyada shahar hayotining kelajagini shakllantirishga va har bir loyihamizda katta ahamiyatni taqdim etishga intiladi."
         }
     }
 }

@@ -1,7 +1,7 @@
 import { About, Contact, Mortgage } from "../../../components";
 import CardList from "../components/CardList";
 import Carousel from "../components/Carousel";
-import CustomerComment from "../components/customerComment";
+import Reviews from "../components/Reviews";
 
 const Home = () => {
   return (
@@ -9,7 +9,7 @@ const Home = () => {
       <Carousel />
       <CardList />
       <Mortgage />
-      <CustomerComment />
+      <Reviews />
       <About />
       <Contact />
     </>

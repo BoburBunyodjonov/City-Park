@@ -1,10 +1,10 @@
 import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { divide, multiply, subtract } from "mathjs";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Range } from "react-range";
-import { format } from "../../utils/format";
 import useHomeContext from "../../pages/home/services/homeContext";
-import { divide, subtract, multiply } from "mathjs";
+import { format } from "../../utils/format";
 
 const Mortgage = () => {
   const { t, i18n } = useTranslation();
@@ -33,7 +33,7 @@ const Mortgage = () => {
 
   useEffect(() => {
     if (data.length) {
-      setApartment(data?.[0]?.id);
+      setApartment(data?.[0]?.id ?? "");
       setPrice(data?.[0]?.price);
     }
   }, [data]);
