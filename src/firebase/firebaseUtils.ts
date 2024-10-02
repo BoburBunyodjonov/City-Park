@@ -17,7 +17,7 @@ interface IGetApartments {
 }
 
 export const getApartments = async (
-  payloa?: IGetApartments
+  payload?: IGetApartments
 ): Promise<DataType[]> => {
   const apartmentsCollection = collection(firestore, "apartments");
   const snapshot = await getDocs(apartmentsCollection);

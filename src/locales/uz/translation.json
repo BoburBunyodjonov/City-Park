@@ -22,7 +22,13 @@
                 "select_apartment":"Xonadonni tanlang",
                 "price":"Narxi",
                 "initial_payment":"Boshlang'ich to'lov"
-            }
+            },
+            "monthly_payment":"Oylik to'lov",
+            "discount":"Chegirma",
+            "total_payment":"Birlamchi to'lov",
+            "duration":"{{year}} yil",
+            "description": "Tijorat ipotekani qanday olish mumkin, iltimos, telefon orqali savdo bo'limiga murojaat qiling {{phone}}",
+            "only_with_us": "Faqatgina Ikan Parkda"
         }
     }
 }

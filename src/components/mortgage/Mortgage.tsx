@@ -1,15 +1,49 @@
-import { MenuItem, Select, TextField } from "@mui/material";
-import { useState } from "react";
+import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Range } from "react-range";
 import { format } from "../../utils/format";
+import useHomeContext from "../../pages/home/services/homeContext";
+import { divide, subtract, multiply } from "mathjs";
 
 const Mortgage = () => {
-  const [apartment, setApartment] = useState<number>(2);
+  const { t, i18n } = useTranslation();
+  const language = i18n.language as "uz" | "ru" | "tr" | "ae";
+  const [apartment, setApartment] = useState<string>("");
   const [price, setPrice] = useState<number>(100000);
-  const [initialPayment, setInitialPayment] = useState<number[]>([15000]);
+  const [initialPayment, setInitialPayment] = useState<number[]>([100000]);
 
-  const { t } = useTranslation();
+  const [monthlyPayment, setMonthlyPayment] = useState(0);
+  const [totalPayment, setTotalPayment] = useState(0);
+  const [discount, setDiscount] = useState(0);
+
+  const {
+    state: { data },
+  } = useHomeContext();
+
+  const handleChangeApartment = (e: SelectChangeEvent) => {
+    const selectedApartment = data.find(
+      (apartment) => apartment.id === e.target.value
+    );
+    if (selectedApartment) {
+      setApartment(e.target.value);
+      setPrice(selectedApartment.price);
+    }
+  };
+
+  useEffect(() => {
+    if (data.length) {
+      setApartment(data?.[0]?.id);
+      setPrice(data?.[0]?.price);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setMonthlyPayment(divide(subtract(price, initialPayment[0]), 240));
+    setTotalPayment(subtract(price, multiply(price, 0.05)));
+    setDiscount(multiply(price, 0.05));
+  }, [apartment, price, initialPayment]);
+
   return (
     <div className="">
       <h1 className="text-xl font-semibold">{t("home.mortgage.title")}</h1>
@@ -24,11 +58,11 @@ const Mortgage = () => {
               size="small"
               id="demo-simple-select"
               value={apartment}
-              onChange={(e) => setApartment(Number(e.target.value))}
+              onChange={handleChangeApartment}
             >
-              {Array.from({ length: 10 }, (_, index) => index).map((index) => (
-                <MenuItem key={index} value={index + 1}>
-                  {t("home.filter.room", { room: index + 1 })}
+              {data?.map((apartment, index) => (
+                <MenuItem key={index} value={apartment.id}>
+                  {apartment[`title_${language}`]}
                 </MenuItem>
               ))}
             </Select>
@@ -95,38 +129,39 @@ const Mortgage = () => {
         <div className="lg:w-[calc(50%-0.75rem)] xl:w-[calc((100%-250px)/2)] p-5 bg-[#F8F8F8] rounded-3xl flex flex-col justify-between">
           <div className="grid md:grid-cols-2 px-3">
             <div className="py-3">
-              <p>Oylik to'lov</p>
+              <p>{t("home.mortgage.monthly_payment")}</p>
               <span className="text-primary text-3xl font-semibold">
-                {format.money(1300, "USD")}
+                {format.money(monthlyPayment, "USD")}
               </span>
             </div>
             <div className="py-3">
-              <p>Chegirma</p>
+              <p>{t("home.mortgage.discount")}</p>
               <span className="text-primary text-3xl font-semibold">
-                {format.money(19200, "USD")}
+                {format.money(discount, "USD")}
               </span>
             </div>
             <div className="py-3">
-              <p>Birlamchi to'lov</p>
+              <p>{t("home.mortgage.total_payment")}</p>
               <span className="text-primary text-3xl font-semibold">
-                {format.money(178900, "USD")}
+                {format.money(totalPayment, "USD")}
               </span>
             </div>
             <div className="py-3">
-              <p>Ipoteka</p>
+              <p>{t("home.mortgage.title")}</p>
               <span className="text-primary text-3xl font-semibold">
-                20 yil
+                {t("home.mortgage.duration", { year: 20 })}
               </span>
             </div>
           </div>
           <p className="text-[#BABABA] text-xs">
-            Tijorat ipotekani qanday olish mumkin, iltimos, telefon orqali savdo
-            bo'limiga murojaat qiling +998 (78) 113-04-59
+            {t("home.mortgage.description", { phone: "+998 (78) 113-04-59" })}
           </p>
         </div>
         <div className="lg:w-[100%] xl:w-[200px] h-[252px] p-5 bg-gradient-to-b from-[#20A582] to-[#123F3C] rounded-3xl relative overflow-hidden">
           <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-            <p className="text-center text-white">Faqatgina Ikan Parkda</p>
+            <p className="text-center text-white">
+              {t("home.mortgage.only_with_us")}
+            </p>
             <span className="text-[10rem] font-extrabold text-white text-center leading-none">
               0%
             </span>
