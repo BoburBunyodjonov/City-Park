@@ -1,7 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { getDocs, collection, getFirestore } from "firebase/firestore";
-import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+  getDocs,
+  collection,
+  getFirestore,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+import {
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { toast, ToastContainer } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
+import { Delete } from "@mui/icons-material";
 
 interface ContactData {
   id: string;
@@ -37,44 +56,68 @@ const ContactTable = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      const db = getFirestore();
+      await deleteDoc(doc(db, "contacts", id));
+      setContacts(contacts.filter(contact => contact.id !== id));
+      toast.success("Contact deleted successfully!"); 
+    } catch (error) {
+      console.error("Error deleting contact: ", error);
+      toast.error("Failed to delete contact."); 
+    }
+  };
+
   useEffect(() => {
     fetchContacts();
   }, []);
 
   return (
     <div className="container mx-auto my-10">
-      <h2 className="text-2xl font-bold mb-4">Contact Submissions</h2>
       {loading ? (
         <div className="flex justify-center">
           <CircularProgress />
         </div>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>First Name</TableCell>
-                <TableCell>Last Name</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Message</TableCell>
-                <TableCell>Apartment ID</TableCell>
-                <TableCell>Timestamp</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {contacts.map((contact) => (
-                <TableRow key={contact.id}>
-                  <TableCell>{contact.firstName}</TableCell>
-                  <TableCell>{contact.lastName}</TableCell>
-                  <TableCell>{contact.phone}</TableCell>
-                  <TableCell>{contact.message}</TableCell>
-                  <TableCell>{contact.apartmentId}</TableCell>
-                  <TableCell>{new Date(contact.timestamp.seconds * 1000).toLocaleString()}</TableCell>
+        <>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>First Name</TableCell>
+                  <TableCell>Last Name</TableCell>
+                  <TableCell>Phone</TableCell>
+                  <TableCell>Message</TableCell>
+                  <TableCell>Apartment ID</TableCell>
+                  <TableCell>Timestamp</TableCell>
+                  <TableCell>Delete</TableCell> 
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {contacts.map((contact, index) => (
+                  <TableRow key={contact.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{contact.firstName}</TableCell>
+                    <TableCell>{contact.lastName}</TableCell>
+                    <TableCell>{contact.phone}</TableCell>
+                    <TableCell>{contact.message}</TableCell>
+                    <TableCell>{contact.apartmentId}</TableCell>
+                    <TableCell>
+                      {new Date(
+                        contact.timestamp.seconds * 1000
+                      ).toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                        <Delete className="text-red-500 cursor-pointer" onClick={() => handleDelete(contact.id)}/>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <ToastContainer /> {/* Include the ToastContainer for notifications */}
+        </>
       )}
     </div>
   );

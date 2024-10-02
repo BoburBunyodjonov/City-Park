@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Home, Building, Settings, LogOut, Contact, CommandIcon, LetterText, Image } from "lucide-react";
+import {
+  Home,
+  Building,
+  Settings,
+  LogOut,
+  Contact,
+  CommandIcon,
+  LetterText,
+  Image,
+} from "lucide-react";
 import { addApartment } from "../../firebase/firebaseUtils";
 import { uploadFile } from "../../firebase/firebaseUtils";
 import { toast, ToastContainer } from "react-toastify";
@@ -7,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // import { v4 as uuidv4 } from "uuid";
 import {
+  Button,
   Checkbox,
   Dialog,
   DialogContent,
@@ -56,9 +66,9 @@ const AdminDashboard: React.FC = () => {
     floor: 0,
   });
 
-  const [activeTab, setActiveTab] = useState<"add" | "manage" | "settings" | "contacts">(
-    "add"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "add" | "manage" | "settings" | "contacts"
+  >("add");
 
   const handleAddApartment = async () => {
     if (!apartmentData.img1 || !apartmentData.img2 || !apartmentData.img3) {
@@ -249,24 +259,27 @@ const AdminDashboard: React.FC = () => {
         {activeTab === "add" && (
           <>
             <ToastContainer />
-
-            <DashboardTable />
-
-            <button
-              className="bg-primary py-3 px-5 text-white mt-4 rounded-lg"
+            <Button
+              variant="contained"
+              className="bg-primary"
+              style={{backgroundColor: "#1EA582"}}
               onClick={() => {
                 setAddModalOpen(true);
               }}
+              sx={{ marginBottom: "20px" }}
             >
               Add Apartment
-            </button>
-            <Dialog open={addModalOpen} onClose={() => setAddModalOpen(false)}>
+            </Button>
+
+            <DashboardTable />
+
+            <Dialog open={addModalOpen} onClose={() => setAddModalOpen(false)} className="w-[1000px]">
               <DialogTitle>Edit Apartment</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   To update this apartment, please enter the new details below.
                 </DialogContentText>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-4 gap-3 w-full">
                   <TextField
                     id="outlined-basic"
                     type="text"
@@ -522,22 +535,19 @@ const AdminDashboard: React.FC = () => {
 
         {activeTab === "manage" && (
           <>
-            <h1 className="text-3xl font-bold mb-6">Banner Add</h1>
             <BannerAdd />
           </>
         )}
 
         {activeTab === "settings" && (
           <>
-            <h1 className="text-3xl font-bold mb-6">Commit add</h1>
-            <CommitAdd/>
+            <CommitAdd />
           </>
         )}
 
         {activeTab === "contacts" && (
           <>
-            <h1 className="text-3xl font-bold mb-6">Commit add</h1>
-            <ContactTable/>
+            <ContactTable />
           </>
         )}
       </div>

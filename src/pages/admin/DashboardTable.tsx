@@ -30,6 +30,7 @@ import {
 } from "../../firebase/firebaseUtils";
 import { DataType } from "../../constants/data";
 import { DeleteIcon, EditIcon } from "lucide-react";
+import { Delete, Edit } from "@mui/icons-material";
 
 const DashboardTable: React.FC = () => {
   const [apartments, setApartments] = useState<DataType[]>([]);
@@ -423,37 +424,31 @@ const DashboardTable: React.FC = () => {
                 <TableCell sx={{ borderRight: "1px solid #ddd" }}>
                   {apartment.price}
                 </TableCell>
-                <TableCell
-                  sx={{
+                <TableCell   sx={{
                     borderRight: "1px solid #ddd",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: 100,
-                  }}
-                >
+                  }}>
                   {apartment.description_uz}
                 </TableCell>
-                <TableCell
-                  sx={{
+                <TableCell   sx={{
                     borderRight: "1px solid #ddd",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: 100,
-                  }}
-                >
+                  }}>
                   {apartment.description_ru}
                 </TableCell>
-                <TableCell
-                  sx={{
+                <TableCell   sx={{
                     borderRight: "1px solid #ddd",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: 100,
-                  }}
-                >
+                  }}>
                   {apartment.description_tr}
                 </TableCell>
                 <TableCell
@@ -547,14 +542,13 @@ const DashboardTable: React.FC = () => {
                     color="primary"
                     onClick={() => handleEditOpen(apartment)}
                   >
-                    <EditIcon />
+                    <Edit />
                   </IconButton>
                   <IconButton
-                    color="secondary"
                     onClick={() => handleDelete(String(apartment.id))}
                     sx={{ ml: 1 }}
                   >
-                    <DeleteIcon />
+                    <Delete  className="text-red-600" />
                   </IconButton>
                 </TableCell>
               </TableRow>
