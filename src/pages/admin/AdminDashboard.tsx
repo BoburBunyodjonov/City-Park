@@ -28,7 +28,6 @@ import CommitAdd from "./CommitAdd";
 const AdminDashboard: React.FC = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [apartmentData, setApartmentData] = useState<DataType>({
-    id: "",
     title_uz: "",
     title_ru: "",
     title_tr: "",
@@ -36,7 +35,7 @@ const AdminDashboard: React.FC = () => {
     img1: null,
     img2: null,
     img3: null,
-    price: "",
+    price: 0,
     description_uz: "",
     description_ru: "",
     description_tr: "",
@@ -48,7 +47,7 @@ const AdminDashboard: React.FC = () => {
     location_ae: "",
     type: "standard",
     mortgage: false,
-    area: "",
+    area: 0,
     furniture: false,
     repair: false,
     parking: false,
@@ -96,7 +95,6 @@ const AdminDashboard: React.FC = () => {
       }
 
       await addApartment({
-        id: newId.toString(),
         title_uz: apartmentData.title_uz,
         title_ru: apartmentData.title_ru,
         title_tr: apartmentData.title_tr,
@@ -104,7 +102,7 @@ const AdminDashboard: React.FC = () => {
         img1: img1Url,
         img2: img2Url,
         img3: img3Url,
-        price: apartmentData.price,
+        price: +apartmentData.price,
         description_uz: apartmentData.description_uz,
         description_ru: apartmentData.description_ru,
         description_tr: apartmentData.description_tr,
@@ -115,16 +113,15 @@ const AdminDashboard: React.FC = () => {
         location_tr: apartmentData.location_tr,
         location_ae: apartmentData.location_ae,
         type: apartmentData.type,
-        mortgage: apartmentData.mortgage === false,
-        area: apartmentData.area,
-        furniture: apartmentData.furniture === false,
-        repair: apartmentData.repair === false,
-        parking: apartmentData.parking === false,
-        floor: Number(apartmentData.floor),
+        mortgage: apartmentData.mortgage,
+        area: +apartmentData.area,
+        furniture: apartmentData.furniture,
+        repair: apartmentData.repair,
+        parking: apartmentData.parking,
+        floor: +apartmentData.floor,
       });
 
       setApartmentData({
-        id: "",
         title_uz: "",
         title_ru: "",
         title_tr: "",
@@ -132,7 +129,7 @@ const AdminDashboard: React.FC = () => {
         img1: null,
         img2: null,
         img3: null,
-        price: "",
+        price: 0,
         description_uz: "",
         description_ru: "",
         description_tr: "",
@@ -144,7 +141,7 @@ const AdminDashboard: React.FC = () => {
         location_ae: "",
         type: "standard",
         mortgage: false,
-        area: "",
+        area: 0,
         furniture: false,
         repair: false,
         parking: false,
@@ -234,14 +231,9 @@ const AdminDashboard: React.FC = () => {
             <Settings className="mr-2" />
             <span>Comments</span>
           </li>
-          {/* <li className="flex cursor-pointer items-center p-2 mb-2 hover:bg-secondary rounded transition-colors">
-            <LogOut className="mr-2" />
-            <span>Logout</span>
-          </li> */}
         </ul>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 p-6 overflow-y-auto">
         {activeTab === "add" && (
           <>

@@ -48,7 +48,7 @@ const DashboardTable: React.FC = () => {
     img1: null,
     img2: null,
     img3: null,
-    price: "",
+    price: 0,
     description_uz: "",
     description_ru: "",
     description_tr: "",
@@ -60,7 +60,7 @@ const DashboardTable: React.FC = () => {
     location_ae: "",
     type: "standard",
     mortgage: false,
-    area: "",
+    area: 0,
     furniture: false,
     repair: false,
     parking: false,
@@ -88,7 +88,7 @@ const DashboardTable: React.FC = () => {
       title_ru: apartment.title_ru || "",
       title_tr: apartment.title_tr || "",
       title_ae: apartment.title_ae || "",
-      price: apartment.price || "",
+      price: apartment.price || 0,
       description_uz: apartment.description_uz || "",
       description_ru: apartment.description_ru || "",
       description_tr: apartment.description_tr || "",
@@ -103,7 +103,7 @@ const DashboardTable: React.FC = () => {
       location_ae: apartment.location_ae || "",
       type: apartment.type || "",
       mortgage: apartment.mortgage || false,
-      area: apartment.area || "",
+      area: apartment.area || 0,
       furniture: apartment.furniture || false,
       repair: apartment.repair || false,
       parking: apartment.parking || false,
@@ -143,18 +143,32 @@ const DashboardTable: React.FC = () => {
   };
 
   const handleEditSubmit = async () => {
-    if (currentApartment) {
+    if (currentApartment && currentApartment.id) {
+      console.log("Current Apartment:", currentApartment); // Debug log
+
       try {
+        // Prepare an array of upload promises
+        const uploadPromises = [
+          formData.img1 ? uploadFile(formData.img1) : Promise.resolve(""), // Default to an empty string if not provided
+          formData.img2 ? uploadFile(formData.img2) : Promise.resolve(""),
+          formData.img3 ? uploadFile(formData.img3) : Promise.resolve(""),
+        ];
+
+        // Wait for all uploads to complete
+        const [uploadedImg1, uploadedImg2, uploadedImg3] = await Promise.all(
+          uploadPromises
+        );
+
         const sanitizedData: DataType = {
-          id: formData.toString(),
+          id: currentApartment.id.toString(), // Corrected ID assignment
           title_uz: formData.title_uz ?? "",
           title_ru: formData.title_ru ?? "",
           title_tr: formData.title_tr ?? "",
           title_ae: formData.title_ae ?? "",
 
-          img1: formData.img1 ? await uploadFile(formData.img1) : "",
-          img2: formData.img2 ? await uploadFile(formData.img2) : "",
-          img3: formData.img3 ? await uploadFile(formData.img3) : "",
+          img1: uploadedImg1,
+          img2: uploadedImg2,
+          img3: uploadedImg3,
 
           price: formData.price ?? "",
           description_uz: formData.description_uz ?? "",
@@ -168,7 +182,7 @@ const DashboardTable: React.FC = () => {
           location_tr: formData.location_tr ?? "",
           location_ae: formData.location_ae ?? "",
 
-          type: formData.type as "business_center" | "beach" | "standard",
+          type: formData.type as "business_center" | "beach" | "standard", // Ensure this is valid
 
           mortgage: formData.mortgage === false,
           area: formData.area ?? "",
@@ -180,13 +194,17 @@ const DashboardTable: React.FC = () => {
           floor: Number(formData.floor) || 0,
         };
 
-        const apartmentId = currentApartment.id?.toString() || "";
+        console.log("Sanitized Data:", sanitizedData); // Debug log before updating
 
+        const apartmentId = currentApartment.id.toString();
+
+        // Update the apartment
         await updateApartment(apartmentId, sanitizedData);
 
+        // Update the local state
         setApartments((prev) =>
           prev.map((apartment) =>
-            apartment.id === currentApartment.id
+            apartment.id === apartmentId
               ? { ...apartment, ...sanitizedData }
               : apartment
           )
@@ -198,8 +216,13 @@ const DashboardTable: React.FC = () => {
         console.error("Error updating apartment:", error);
         setSnackbarMessage("Failed to update apartment.");
         setSnackbarOpen(true);
+      } finally {
+        handleEditClose();
       }
-      handleEditClose();
+    } else {
+      console.error("No current apartment selected for update.");
+      setSnackbarMessage("No apartment selected for update.");
+      setSnackbarOpen(true);
     }
   };
 
@@ -400,16 +423,48 @@ const DashboardTable: React.FC = () => {
                 <TableCell sx={{ borderRight: "1px solid #ddd" }}>
                   {apartment.price}
                 </TableCell>
-                <TableCell sx={{ borderRight: "1px solid #ddd" }}>
+                <TableCell
+                  sx={{
+                    borderRight: "1px solid #ddd",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: 100,
+                  }}
+                >
                   {apartment.description_uz}
                 </TableCell>
-                <TableCell sx={{ borderRight: "1px solid #ddd" }}>
+                <TableCell
+                  sx={{
+                    borderRight: "1px solid #ddd",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: 100,
+                  }}
+                >
                   {apartment.description_ru}
                 </TableCell>
-                <TableCell sx={{ borderRight: "1px solid #ddd" }}>
+                <TableCell
+                  sx={{
+                    borderRight: "1px solid #ddd",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: 100,
+                  }}
+                >
                   {apartment.description_tr}
                 </TableCell>
-                <TableCell sx={{ borderRight: "1px solid #ddd" }}>
+                <TableCell
+                  sx={{
+                    borderRight: "1px solid #ddd",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: 100,
+                  }}
+                >
                   {apartment.description_ae}
                 </TableCell>
                 <TableCell sx={{ borderRight: "1px solid #ddd" }}>
@@ -496,7 +551,7 @@ const DashboardTable: React.FC = () => {
                   </IconButton>
                   <IconButton
                     color="secondary"
-                    onClick={() => handleDelete(String(apartment.id))} 
+                    onClick={() => handleDelete(String(apartment.id))}
                     sx={{ ml: 1 }}
                   >
                     <DeleteIcon />

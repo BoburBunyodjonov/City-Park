@@ -13,6 +13,9 @@ const CardList = () => {
     state: { room, type, rangeValues, data, apartmentTypes },
     actions: { handleRangeChange, setRoom, setType },
   } = useHomeContext();
+
+  console.log(data)
+
   return (
     <>
       <section className="text-gray-600 body-font" id="tutar_joylar">

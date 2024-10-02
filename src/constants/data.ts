@@ -1,13 +1,13 @@
 export interface DataType {
-  id: number | string;
+  id?: number | string;
   title_uz: string;
   title_ru: string;
   title_tr: string;
   title_ae: string;
-  img1: File | null;
-  img2: File | null;
-  img3: File | null;
-  price: string;
+  img1: any;
+  img2: any;
+  img3: any;
+  price: number;
   description_uz: string;
   description_ru: string;
   description_tr: string;
@@ -19,7 +19,7 @@ export interface DataType {
   location_ae: string;
   type: "business_center" | "beach" | "standard";
   mortgage: boolean;
-  area: string;
+  area: number;
   furniture: boolean;
   repair: boolean;
   parking: boolean;
