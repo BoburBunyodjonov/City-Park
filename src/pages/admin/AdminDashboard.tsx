@@ -529,14 +529,13 @@ const AdminDashboard: React.FC = () => {
 
         {activeTab === "settings" && (
           <>
-            <h1 className="text-3xl font-bold mb-6">Commit add</h1>
+            <h1 className="text-3xl font-bold mb-6">Comment add</h1>
             <CommitAdd/>
           </>
         )}
 
         {activeTab === "contacts" && (
           <>
-            <h1 className="text-3xl font-bold mb-6">Commit add</h1>
             <ContactTable/>
           </>
         )}
