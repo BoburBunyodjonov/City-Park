@@ -1,7 +1,7 @@
-import { storage, firestore } from '../../firebase/firebaseConfig'; // Importing storage and firestore
+import { storage, firestore } from '../../firebase/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { Button, Card, CardContent, CardMedia, Typography, Grid, Box } from '@mui/material';
+import { Button, Box, Modal, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -15,15 +15,16 @@ export interface Image {
 
 const BannerAdd: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
-  const [selectedImages, setSelectedImages] = useState<File[]>(Array(3).fill(null));
-  const [editingImageId, setEditingImageId] = useState<string | null>(null); // Store the ID of the image being edited
-  const [newImageName, setNewImageName] = useState<string>(''); // State for the new image name
-  const [newImageFile, setNewImageFile] = useState<File | null>(null); // State for new image file during editing
+  const [selectedImage, setSelectedImage] = useState<File | null>(null); // Changed to hold only one image
+  const [editingImageId, setEditingImageId] = useState<string | null>(null);
+  const [newImageName, setNewImageName] = useState<string>(''); 
+  const [open, setOpen] = useState(false); 
+  const [editMode, setEditMode] = useState(false); // New state for edit mode
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "banners")); // Use firestore here
+        const querySnapshot = await getDocs(collection(firestore, "banners")); 
         const fetchedImages: Image[] = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
@@ -36,62 +37,46 @@ const BannerAdd: React.FC = () => {
     fetchImages();
   }, []);
 
-  const handleImageChange = (index: number) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const updatedImages = [...selectedImages];
-      updatedImages[index] = e.target.files[0]; // Store the selected file
-      setSelectedImages(updatedImages);
+      setSelectedImage(e.target.files[0]); // Update to set only one image
     }
   };
 
-  const uploadImages = async () => {
-    let uploadSuccess = true;
+  const uploadImage = async () => {
+    if (selectedImage) {
+      const storageRef = ref(storage, `banners/${selectedImage.name}`);
+      try {
+        await uploadBytes(storageRef, selectedImage);
+        const url = await getDownloadURL(storageRef);
 
-    for (const file of selectedImages) {
-      if (file) {
-        const storageRef = ref(storage, `banners/${file.name}`);
-        try {
-          await uploadBytes(storageRef, file);
-          const url = await getDownloadURL(storageRef);
-
-          // Add uploaded image to Firestore
-          await addDoc(collection(firestore, "banners"), { // Use firestore here
-            url,
-            name: file.name,
-          });
-        } catch (error) {
-          uploadSuccess = false;
-          toast.error(`Failed to upload ${file.name}.`);
-        }
+        await addDoc(collection(firestore, "banners"), { 
+          url,
+          name: selectedImage.name,
+        });
+        toast.success("Image uploaded successfully!");
+      } catch (error) {
+        toast.error(`Failed to upload ${selectedImage.name}.`);
       }
-    }
 
-    if (uploadSuccess) {
-      toast.success("Images uploaded successfully!");
+      // Fetch updated images after upload
+      const querySnapshot = await getDocs(collection(firestore, "banners")); 
+      const fetchedImages: Image[] = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Image[];
+      setImages(fetchedImages);
+      setSelectedImage(null); // Clear selected image
     }
-
-    // Refresh images after upload
-    const querySnapshot = await getDocs(collection(firestore, "banners")); // Use firestore here
-    const fetchedImages: Image[] = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Image[];
-    setImages(fetchedImages);
-    setSelectedImages(Array(3).fill(null)); // Reset selected images
   };
 
   const handleDelete = async (id: string) => {
-    const imageDoc = doc(firestore, "banners", id); // Use firestore here
+    const imageDoc = doc(firestore, "banners", id); 
     const imageRef = ref(storage, `banners/${images.find(img => img.id === id)?.name}`);
 
     try {
-      // Delete from Firestore
       await deleteDoc(imageDoc);
-      
-      // Delete from Storage
       await deleteObject(imageRef);
-
-      // Update local state
       setImages(images.filter(image => image.id !== id));
       toast.success("Image deleted successfully!");
     } catch (error) {
@@ -100,42 +85,33 @@ const BannerAdd: React.FC = () => {
   };
 
   const handleEdit = (image: Image) => {
-    setEditingImageId(image.id); // Set the ID of the image to edit
-    setNewImageName(image.name); // Set the current name for editing
-    setNewImageFile(null); // Reset the new image file state
+    setEditingImageId(image.id); 
+    setNewImageName(image.name); 
+    setEditMode(true); // Set edit mode
+    setOpen(true); // Open the modal for editing
   };
 
   const handleUpdate = async () => {
-    if (editingImageId && (newImageName || newImageFile)) {
-      const imageDoc = doc(firestore, "banners", editingImageId); // Reference to the document to update
+    if (editingImageId && (newImageName || selectedImage)) {
+      const imageDoc = doc(firestore, "banners", editingImageId);
       const editingImage = images.find(img => img.id === editingImageId);
-      if (!editingImage) return; // If the image is not found, do nothing
+      if (!editingImage) return; 
       
       const storageRef = ref(storage, `banners/${editingImage.name}`);
       const newStorageRef = newImageName ? ref(storage, `banners/${newImageName}`) : null;
 
       try {
-        // Update the image name in Firestore
         await updateDoc(imageDoc, { name: newImageName || editingImage.name });
-
-        // If the name changed or a new file is provided, update the image file in storage
-        if (newImageFile) {
-          // Upload the new image file
-          await uploadBytes(newStorageRef!, newImageFile);
-
-          // Delete the old image if the name has changed
+        if (selectedImage) {
+          await uploadBytes(newStorageRef!, selectedImage);
           if (editingImage.name !== newImageName) {
-            await deleteObject(storageRef); // Delete the old image
+            await deleteObject(storageRef); 
           }
         }
-
-        // Reset editing state
-        setEditingImageId(null); // Reset the editing image ID
+        setEditingImageId(null); 
         setNewImageName('');
-        setNewImageFile(null); // Reset the new image file
+        setEditMode(false); // Reset edit mode
         toast.success("Image updated successfully!");
-
-        // Refresh images after update
         const querySnapshot = await getDocs(collection(firestore, "banners"));
         const fetchedImages: Image[] = querySnapshot.docs.map(doc => ({
           id: doc.id,
@@ -148,74 +124,92 @@ const BannerAdd: React.FC = () => {
     }
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+    setEditMode(false); // Reset edit mode when opening modal
+  };
+  
+  const handleClose = () => {
+    setOpen(false);
+    setEditMode(false); // Reset edit mode when closing modal
+    setNewImageName('');
+    setSelectedImage(null); // Clear selected image
+  };
+
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h6">Upload Three Images</Typography>
-      {selectedImages.map((image, index) => (
-        <input
-          key={index}
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange(index)}
-          style={{ marginBottom: '20px' }}
-        />
-      ))}
+      <Typography variant="h6">Manage Banners</Typography>
+
       <Button
         variant="contained"
         color="primary"
-        onClick={uploadImages}
-        disabled={selectedImages.every(image => image === null)}
+        onClick={handleOpen} 
+        sx={{ marginBottom: '20px' }}
       >
-        Upload Images
+        Add Banner
       </Button>
 
-      <Typography variant="h5" sx={{ marginTop: '20px' }}>
-        Uploaded Images
-      </Typography>
-      <Grid container spacing={2} sx={{ marginTop: '10px' }}>
-        {images.map(image => (
-          <Grid item xs={12} sm={6} md={4} key={image.id}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image={image.url}
-                alt={image.name}
-              />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {image.name}
-                </Typography>
-                <Button variant="outlined" color="error" onClick={() => handleDelete(image.id)}>
-                  Delete
-                </Button>
-                <Button variant="outlined" color="primary" onClick={() => handleEdit(image)}>
-                  Edit
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Image</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {images.map(image => (
+              <TableRow key={image.id}>
+                <TableCell>
+                  <img src={image.url} alt={image.name} width={100} />
+                </TableCell>
+                <TableCell>{image.name}</TableCell>
+                <TableCell>
+                  <Button variant="outlined" color="error" onClick={() => handleDelete(image.id)}>
+                    Delete
+                  </Button>
+                  <Button variant="outlined" color="primary" onClick={() => handleEdit(image)}>
+                    Edit
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      {editingImageId && (
-        <Box sx={{ marginTop: '20px' }}>
-          <Typography variant="h6">Edit Image</Typography>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={{ padding: 4, backgroundColor: 'white', borderRadius: 2, maxWidth: 400, margin: 'auto', marginTop: '20vh' }}>
+          <Typography variant="h6">{editMode ? 'Edit Banner' : 'Upload New Banner'}</Typography>
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => {
-              if (e.target.files && e.target.files[0]) {
-                setNewImageFile(e.target.files[0]); // Set the new image file
-              }
-            }}
-            style={{ marginBottom: '20px', marginTop: '10px' }}
+            onChange={handleImageChange}
+            style={{ marginBottom: '20px' }}
           />
-          <Button variant="contained" color="primary" onClick={handleUpdate}>
-            Update Image
+          {editMode && (
+            <Box>
+              <Typography variant="body1">Current Name: {newImageName}</Typography>
+              <input
+                type="text"
+                value={newImageName}
+                onChange={(e) => setNewImageName(e.target.value)}
+                placeholder="New Image Name (Optional)"
+                style={{ marginBottom: '20px', width: '100%' }}
+              />
+            </Box>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={editMode ? handleUpdate : uploadImage}
+            disabled={!selectedImage && !editMode} // Disable if no image is selected
+          >
+            {editMode ? 'Update Image' : 'Upload Image'}
           </Button>
         </Box>
-      )}
+      </Modal>
 
       <ToastContainer />
     </Box>
