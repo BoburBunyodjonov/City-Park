@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { getDocs, collection, getFirestore } from "firebase/firestore";
-import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 interface ContactData {
@@ -52,6 +61,7 @@ const ContactTable = () => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>#</TableCell>{" "}
                 <TableCell>First Name</TableCell>
                 <TableCell>Last Name</TableCell>
                 <TableCell>Phone</TableCell>
@@ -61,14 +71,19 @@ const ContactTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {contacts.map((contact) => (
+              {contacts.map((contact, index) => (
                 <TableRow key={contact.id}>
+                  <TableCell>{index + 1}</TableCell>{" "}
                   <TableCell>{contact.firstName}</TableCell>
                   <TableCell>{contact.lastName}</TableCell>
                   <TableCell>{contact.phone}</TableCell>
                   <TableCell>{contact.message}</TableCell>
                   <TableCell>{contact.apartmentId}</TableCell>
-                  <TableCell>{new Date(contact.timestamp.seconds * 1000).toLocaleString()}</TableCell>
+                  <TableCell>
+                    {new Date(
+                      contact.timestamp.seconds * 1000
+                    ).toLocaleString()}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
