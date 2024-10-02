@@ -1,54 +1,18 @@
-import { useEffect, useState } from "react";
 import Card from "./Card";
 import { Range } from "react-range";
 import { MenuItem, Select } from "@mui/material";
-
-import { DataType } from "../../../constants/data";
 import { useTranslation } from "react-i18next";
-import { getApartments } from "../../../firebase/firebaseUtils";
-import { debounce } from "lodash";
-
-type ApartmentType = "business_center" | "beach" | "standard";
-
-const apartmentTypes: ApartmentType[] = [
-  "business_center",
-  "beach",
-  "standard",
-];
+import useHomeContext, { ApartmentType } from "../services/homeContext";
+import { format } from "../../../utils/format";
 
 const CardList = () => {
   const { t, i18n } = useTranslation();
   const language = i18n.language as "uz" | "ru" | "tr";
-  const [rangeValues, setRangeValues] = useState<number[]>([0, 200000]);
-  const [room, setRoom] = useState<number>(2);
-  const [type, setType] = useState<ApartmentType>(apartmentTypes[2]);
-  const [data, setData] = useState<DataType[]>([]);
 
-  const handleRangeChange = (values: number[]) => {
-    setRangeValues(values);
-  };
-
-  const fetchData = debounce(async () => {
-    try {
-      const apartments = await getApartments({
-        price: rangeValues,
-        room,
-        type,
-      });
-      setData(apartments);
-    } catch (error) {
-      console.error("Error fetching apartments data:", error);
-    }
-  }, 300);
-
-  useEffect(() => {
-    fetchData();
-
-    return () => {
-      fetchData.cancel();
-    };
-  }, [rangeValues, room, type]);
-
+  const {
+    state: { room, type, rangeValues, data, apartmentTypes },
+    actions: { handleRangeChange, setRoom, setType },
+  } = useHomeContext();
   return (
     <>
       <section className="text-gray-600 body-font" id="tutar_joylar">
@@ -82,10 +46,14 @@ const CardList = () => {
             <div className="relative flex-grow w-full rounded border flex flex-col justify-between border-[#0000003B] h-[40px]">
               <div className="flex-grow flex justify-between items-center w-full px-3">
                 <div className="text-gray-600">
-                  <span className="">${rangeValues[0].toLocaleString()}</span>
+                  <span className="">
+                    {format.money(rangeValues?.[0], "USD")}
+                  </span>
                 </div>
                 <div className="text-gray-600">
-                  <span className="">${rangeValues[1].toLocaleString()}</span>
+                  <span className="">
+                    {format.money(rangeValues?.[1], "USD")}
+                  </span>
                 </div>
               </div>
               <div className="w-full px-2">

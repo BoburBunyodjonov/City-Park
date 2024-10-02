@@ -2,6 +2,7 @@ import { MenuItem, Select, TextField } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Range } from "react-range";
+import { format } from "../../utils/format";
 
 const Mortgage = () => {
   const [apartment, setApartment] = useState<number>(2);
@@ -12,8 +13,8 @@ const Mortgage = () => {
   return (
     <div className="">
       <h1 className="text-xl font-semibold">{t("home.mortgage.title")}</h1>
-      <div className="flex py-5 gap-5">
-        <div className="lg:w-[42%]">
+      <div className="flex flex-col flex-wrap content-stretch py-5 gap-5 lg:flex-row">
+        <div className="lg:w-[calc(50%-0.75rem)] xl:w-[calc((100%-250px)/2)]">
           <div className="relative mb-4 w-full">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               {t("home.mortgage.form.select_apartment")}
@@ -91,24 +92,24 @@ const Mortgage = () => {
             </div>
           </div>
         </div>
-        <div className="lg:w-[42%] p-5 bg-[#F8F8F8] rounded-3xl flex flex-col justify-between">
+        <div className="lg:w-[calc(50%-0.75rem)] xl:w-[calc((100%-250px)/2)] p-5 bg-[#F8F8F8] rounded-3xl flex flex-col justify-between">
           <div className="grid md:grid-cols-2 px-3">
             <div className="py-3">
               <p>Oylik to'lov</p>
               <span className="text-primary text-3xl font-semibold">
-                $ 1,300
+                {format.money(1300, "USD")}
               </span>
             </div>
             <div className="py-3">
               <p>Chegirma</p>
               <span className="text-primary text-3xl font-semibold">
-                $ 19,200
+                {format.money(19200, "USD")}
               </span>
             </div>
             <div className="py-3">
               <p>Birlamchi to'lov</p>
               <span className="text-primary text-3xl font-semibold">
-                $ 178,900
+                {format.money(178900, "USD")}
               </span>
             </div>
             <div className="py-3">
@@ -123,12 +124,12 @@ const Mortgage = () => {
             bo'limiga murojaat qiling +998 (78) 113-04-59
           </p>
         </div>
-        <div className="lg:w-[16%] flex">
-          <div className="h-full w-full p-5 bg-gradient-to-b from-[#20A582] to-[#123F3C] rounded-3xl flex flex-col justify-around">
+        <div className="lg:w-[100%] xl:w-[200px] h-[252px] p-5 bg-gradient-to-b from-[#20A582] to-[#123F3C] rounded-3xl relative overflow-hidden">
+          <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <p className="text-center text-white">Faqatgina Ikan Parkda</p>
-            <h1 className="text-[11rem] font-extrabold text-white text-center">
+            <span className="text-[10rem] font-extrabold text-white text-center leading-none">
               0%
-            </h1>
+            </span>
           </div>
         </div>
       </div>
