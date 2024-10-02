@@ -1,0 +1,83 @@
+import React, { useEffect, useState } from "react";
+import { getDocs, collection, getFirestore } from "firebase/firestore";
+import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { useTranslation } from "react-i18next";
+
+interface ContactData {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  message: string;
+  apartmentId: string;
+  timestamp: any;
+}
+
+const ContactTable = () => {
+  const { i18n } = useTranslation();
+  const language = i18n.language as "uz" | "ru" | "tr" | "ae";
+
+  const [contacts, setContacts] = useState<ContactData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchContacts = async () => {
+    setLoading(true);
+    try {
+      const db = getFirestore();
+      const querySnapshot = await getDocs(collection(db, "contacts"));
+      const fetchedContacts: ContactData[] = [];
+      querySnapshot.forEach((doc) => {
+        fetchedContacts.push({ id: doc.id, ...doc.data() } as ContactData);
+      });
+      setContacts(fetchedContacts);
+    } catch (error) {
+      console.error("Error fetching contacts: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchContacts();
+  }, []);
+
+  return (
+    <div className="container mx-auto my-10">
+      <h2 className="text-2xl font-bold mb-4">Contact Submissions</h2>
+      {loading ? (
+        <div className="flex justify-center">
+          <CircularProgress />
+        </div>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>First Name</TableCell>
+                <TableCell>Last Name</TableCell>
+                <TableCell>Phone</TableCell>
+                <TableCell>Message</TableCell>
+                <TableCell>Apartment ID</TableCell>
+                <TableCell>Timestamp</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {contacts.map((contact) => (
+                <TableRow key={contact.id}>
+                  <TableCell>{contact.firstName}</TableCell>
+                  <TableCell>{contact.lastName}</TableCell>
+                  <TableCell>{contact.phone}</TableCell>
+                  <TableCell>{contact.message}</TableCell>
+                  <TableCell>{contact.apartmentId}</TableCell>
+                  <TableCell>{new Date(contact.timestamp.seconds * 1000).toLocaleString()}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </div>
+  );
+};
+
+export default ContactTable;

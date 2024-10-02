@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Home, Building, Settings, LogOut } from "lucide-react";
+import { Home, Building, Settings, LogOut, Contact, CommandIcon, LetterText, Image } from "lucide-react";
 import { addApartment } from "../../firebase/firebaseUtils";
 import { uploadFile } from "../../firebase/firebaseUtils";
 import { toast, ToastContainer } from "react-toastify";
@@ -24,6 +24,8 @@ import DashboardTable from "./DashboardTable";
 import { DataType } from "../../constants/data";
 import BannerAdd from "./BannerAdd";
 import CommitAdd from "./CommitAdd";
+import { Comment } from "@mui/icons-material";
+import ContactTable from "./ContactTable";
 
 const AdminDashboard: React.FC = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -54,7 +56,7 @@ const AdminDashboard: React.FC = () => {
     floor: 0,
   });
 
-  const [activeTab, setActiveTab] = useState<"add" | "manage" | "settings">(
+  const [activeTab, setActiveTab] = useState<"add" | "manage" | "settings" | "contacts">(
     "add"
   );
 
@@ -219,7 +221,7 @@ const AdminDashboard: React.FC = () => {
             }`}
             onClick={() => setActiveTab("manage")}
           >
-            <Building className="mr-2" />
+            <Image className="mr-2" />
             <span>Banners</span>
           </li>
           <li
@@ -228,8 +230,17 @@ const AdminDashboard: React.FC = () => {
             }`}
             onClick={() => setActiveTab("settings")}
           >
-            <Settings className="mr-2" />
+            <Comment className="mr-2" />
             <span>Comments</span>
+          </li>
+          <li
+            className={`flex cursor-pointer items-center p-2 mb-2 hover:bg-secondary rounded transition-colors ${
+              activeTab === "contacts" ? "bg-secondary" : ""
+            }`}
+            onClick={() => setActiveTab("contacts")}
+          >
+            <Contact className="mr-2" />
+            <span>Contacts</span>
           </li>
         </ul>
       </div>
@@ -520,6 +531,13 @@ const AdminDashboard: React.FC = () => {
           <>
             <h1 className="text-3xl font-bold mb-6">Commit add</h1>
             <CommitAdd/>
+          </>
+        )}
+
+        {activeTab === "contacts" && (
+          <>
+            <h1 className="text-3xl font-bold mb-6">Commit add</h1>
+            <ContactTable/>
           </>
         )}
       </div>
