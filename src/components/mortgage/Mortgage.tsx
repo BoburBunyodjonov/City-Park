@@ -3,10 +3,11 @@ import { divide, multiply, subtract } from "mathjs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Range } from "react-range";
+import { DataType } from "../../constants/data";
 import useHomeContext from "../../pages/home/services/homeContext";
 import { format } from "../../utils/format";
 
-const Mortgage = () => {
+const Mortgage = ({ apartments }: { apartments?: DataType[] }) => {
   const { t, i18n } = useTranslation();
   const language = i18n.language as "uz" | "ru" | "tr" | "ae";
   const [apartment, setApartment] = useState<string>("");
@@ -22,9 +23,9 @@ const Mortgage = () => {
   } = useHomeContext();
 
   const handleChangeApartment = (e: SelectChangeEvent) => {
-    const selectedApartment = data.find(
-      (apartment) => apartment.id === e.target.value
-    );
+    const selectedApartment = (
+      data?.length ? data : apartments?.length ? apartments : []
+    )?.find((apartment) => apartment.id === e.target.value);
     if (selectedApartment) {
       setApartment(e.target.value);
       setPrice(selectedApartment.price);
@@ -32,11 +33,14 @@ const Mortgage = () => {
   };
 
   useEffect(() => {
-    if (data.length) {
+    if (data?.length) {
       setApartment(data?.[0]?.id ?? "");
       setPrice(data?.[0]?.price);
+    } else if (apartments?.length) {
+      setApartment(apartments?.[0]?.id ?? "");
+      setPrice(apartments?.[0]?.price);
     }
-  }, [data]);
+  }, [data, apartments]);
 
   useEffect(() => {
     setMonthlyPayment(divide(subtract(price, initialPayment[0]), 240));
@@ -60,7 +64,12 @@ const Mortgage = () => {
               value={apartment}
               onChange={handleChangeApartment}
             >
-              {data?.map((apartment, index) => (
+              {(data?.length
+                ? data
+                : apartments?.length
+                ? apartments
+                : []
+              )?.map((apartment, index) => (
                 <MenuItem key={index} value={apartment.id}>
                   {apartment[`title_${language}`]}
                 </MenuItem>

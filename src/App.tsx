@@ -9,9 +9,9 @@ import { Flip, ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/protextedRoute/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import "./i18n";
-import RootLayout from "./layout/rootLayout";
+import RootLayout from "./layout/container";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Details from "./pages/details/Details";
+import Details from "./pages/details/container";
 import Home from "./pages/home/container";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -29,28 +29,28 @@ let theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "10px", // Adjust for Button
+          borderRadius: "10px",
         },
       },
     },
     MuiTextField: {
       styleOverrides: {
         root: {
-          borderRadius: "10px", // Adjust for TextField
+          borderRadius: "10px",
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: "10px", // Adjust for OutlinedInput
+          borderRadius: "10px",
         },
       },
     },
     MuiSelect: {
       styleOverrides: {
         root: {
-          borderRadius: "10px", // Adjust for Select
+          borderRadius: "10px",
         },
       },
     },

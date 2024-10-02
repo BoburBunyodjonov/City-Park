@@ -10,6 +10,7 @@ import { getApartments } from "../../../firebase/firebaseUtils";
 import { DataType } from "../../../constants/data";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebaseConfig";
+import useLayoutContext from "../../../layout/services/layoutContext";
 
 export type ApartmentType = "business_center" | "beach" | "standard";
 
@@ -35,6 +36,10 @@ const Context = () => {
   const [reviews, setReviews] = useState<
     { src: string; title: string; comment: string }[]
   >([]);
+
+  const {
+    actions: { setLoading },
+  } = useLayoutContext();
 
   const handleRangeChange = (values: number[]) => {
     setRangeValues(values);
@@ -89,10 +94,16 @@ const Context = () => {
 
   useEffect(() => {}, [rangeValues, room, type]);
 
+  const fetchAll = async () => {
+    setLoading(true);
+    await fetchBanner();
+    await fetchApartments();
+    await fetchReviews();
+    setLoading(false);
+  };
+
   useEffect(() => {
-    fetchBanner();
-    fetchApartments();
-    fetchReviews();
+    fetchAll();
   }, []);
 
   return {

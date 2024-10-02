@@ -3,13 +3,14 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DataType } from "../../constants/data";
 import useHomeContext from "../../pages/home/services/homeContext";
 
-const Contact = () => {
+const Contact = ({ apartments }: { apartments?: DataType[] }) => {
   const { t, i18n } = useTranslation();
   const language = i18n.language as "uz" | "ru" | "tr" | "ae";
   const [apartment, setApartment] = useState<string>("");
@@ -24,19 +25,21 @@ const Contact = () => {
   } = useHomeContext();
 
   const handleChangeApartment = (e: SelectChangeEvent) => {
-    const selectedApartment = data.find(
-      (apartment) => apartment.id === e.target.value
-    );
+    const selectedApartment = (
+      data?.length ? data : apartments?.length ? apartments : []
+    )?.find((apartment) => apartment.id === e.target.value);
     if (selectedApartment) {
       setApartment(e.target.value);
     }
   };
 
   useEffect(() => {
-    if (data.length) {
+    if (data?.length) {
       setApartment(data?.[0]?.id || "");
+    } else if (apartments?.length) {
+      setApartment(apartments?.[0]?.id || "");
     }
-  }, [data]);
+  }, [data, apartments]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -111,7 +114,12 @@ const Contact = () => {
                     onChange={handleChangeApartment}
                     required
                   >
-                    {data?.map((apartment, index) => (
+                    {(data?.length
+                      ? data
+                      : apartments?.length
+                      ? apartments
+                      : []
+                    )?.map((apartment, index) => (
                       <MenuItem key={index} value={apartment.id}>
                         {apartment[`title_${language}`]}
                       </MenuItem>
@@ -173,4 +181,4 @@ const Contact = () => {
   );
 };
 
-export default memo(Contact);
+export default Contact;

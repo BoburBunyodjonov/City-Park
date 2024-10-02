@@ -1,54 +1,25 @@
-import { Contact, Mortgage } from "../../components";
+import { Contact, Mortgage } from "../../../components";
 // Icons
 import {
   AreaIcon,
-  ObjectIcon,
-  FixIcon,
   AvtoParkingIcon,
-} from "../../assets/svg";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+  FixIcon,
+  ObjectIcon,
+} from "../../../assets/svg";
 // Data Types
-import { DataType } from "../../constants/data";
 // Firebase Data
-import { getApartments } from "../../firebase/firebaseUtils";
+import useDetailsContext from "../services/detailsContext";
+import { Button } from "@mui/material";
+import { format } from "../../../utils/format";
 
 const Details = () => {
-  const { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<DataType[] | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apartments = await getApartments();
-        setData(apartments);
-        console.log("Fetched apartments:", apartments);
-      } catch (error) {
-        console.error("Error fetching apartments data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (!data) {
-    return <p>Loading...</p>;
-  }
-
-  console.log("Checking for apartment ID:", id);
-
-  const selectedApartment = data.find((apartment) => {
-    console.log("Apartment ID:", apartment.id);
-    return apartment.id === id;
-  });
-
-  if (!selectedApartment) {
-    return <p>No apartment found for this ID.</p>;
-  }
+  const {
+    state: { apartments, selectedApartment },
+  } = useDetailsContext();
 
   return (
     <>
-      <div className="container mx-auto lg:flex  gap-6 p-5">
+      <div className="container mx-auto lg:flex  gap-6 my-5 p-0">
         <div className="lg:w-[65%] flex justify-center items-center">
           {selectedApartment?.img1 && (
             <img
@@ -77,7 +48,7 @@ const Details = () => {
             )}
           </div>
           <div className="flex justify-center items-center">
-          {selectedApartment?.img3 && (
+            {selectedApartment?.img3 && (
               <img
                 src={
                   typeof selectedApartment.img3 === "string"
@@ -92,7 +63,7 @@ const Details = () => {
         </div>
       </div>
 
-      <div className="container mx-auto lg:flex space-y-3 gap-6 py-3 px-5">
+      <div className="container mx-auto lg:flex space-y-3 gap-6 p-0 mb-10">
         <div className="lg:w-[65%]">
           <h1 className="text-primary font-semibold text-2xl lg:text-3xl pb-3">
             {selectedApartment?.title_uz}
@@ -105,17 +76,23 @@ const Details = () => {
           <div className="w-full bg-[#D2EDE6] p-5 rounded-2xl">
             <span className="text-base lg:text-lg">Boshlang’ich narxi</span>
             <p className="text-primary text-2xl lg:text-3xl font-semibold">
-              {selectedApartment?.price}
+              {format.money(selectedApartment?.price, "USD")}
             </p>
-            <button className="w-full px-5 py-3 text-white mt-4 bg-gradient-to-r rounded-2xl from-[#20A582] to-[#123F3C]">
+            <Button
+              fullWidth
+              className="bg-gradient-to-r rounded-2xl from-[#20A582] to-[#123F3C]"
+              variant="contained"
+              disableElevation
+              sx={{ marginTop: "20px" }}
+            >
               To’liq katalogni yuklash
-            </button>
+            </Button>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto grid grid-cols-2 lg:grid-cols-4 justify-center items-center p-5 py-10">
-        <div className="flex items-center space-x-3 p-3 justify-center md:justify-start">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-10 m-0 p-0 py-10">
+        <div className="flex items-center space-x-3 md:justify-start">
           <div className="bg-[#D2EDE6] p-3 rounded-xl">
             <AreaIcon />
           </div>
@@ -126,7 +103,7 @@ const Details = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 p-3 justify-center md:justify-start">
+        <div className="flex items-center space-x-3 md:justify-start">
           <div className="bg-[#D2EDE6] p-3 rounded-xl">
             <ObjectIcon />
           </div>
@@ -137,7 +114,7 @@ const Details = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 p-3 justify-center md:justify-start">
+        <div className="flex items-center space-x-3 md:justify-start">
           <div className="bg-[#D2EDE6] p-3 rounded-xl">
             <FixIcon />
           </div>
@@ -148,7 +125,7 @@ const Details = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 p-3 justify-center md:justify-start">
+        <div className="flex items-center space-x-3 md:justify-start">
           <div className="bg-[#D2EDE6] p-3 rounded-xl">
             <AvtoParkingIcon />
           </div>
@@ -161,8 +138,8 @@ const Details = () => {
         </div>
       </div>
 
-      <Mortgage />
-      <Contact />
+      <Mortgage apartments={apartments} />
+      <Contact apartments={apartments} />
     </>
   );
 };
