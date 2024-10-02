@@ -17,26 +17,25 @@ const CustomerComment = () => {
   const [videoData, setVideoData] = useState<{ src: string; poster: string; title: string }[]>([]);
   const videoRefs = useRef<HTMLVideoElement[]>([]);
 
-  // Fetch video data from Firestore
   useEffect(() => {
     const fetchVideoData = async () => {
-      const db = getFirestore(); // Get Firestore instance
-      const videoCollection = collection(db, "videos"); // Reference to the "videos" collection
+      const db = getFirestore(); 
+      const videoCollection = collection(db, "videos"); 
 
       try {
-        const videoSnapshot = await getDocs(videoCollection); // Fetch documents
+        const videoSnapshot = await getDocs(videoCollection); 
         const videoList = videoSnapshot.docs.map((doc) => {
           const data = doc.data();
-          console.log(data); // Check the structure of the fetched data
+          console.log(data); 
           return {
             id: doc.id,
-            src: data.src || "", // Use an empty string if src is not available
-            poster: data.poster || videoPoster, // Use a default poster if none exists
-            title: data.title || "Untitled Video", // Default title
+            src: data.src || "",
+            poster: data.poster || videoPoster, 
+            title: data.title || "Untitled Video", 
           };
         });
-        setVideoData(videoList); // Set the video data
-        console.log(videoList); // Log to check if videoList is populated correctly
+        setVideoData(videoList); 
+        console.log(videoList); 
       } catch (error) {
         console.error("Failed to fetch video data:", error);
       }
@@ -102,7 +101,7 @@ const CustomerComment = () => {
                 ref={(el) => (videoRefs.current[index] = el!)}
                 className="w-full h-[400px] object-cover rounded-2xl"
                 src={video.src}
-                poster={video.poster} // Use the poster image
+                poster={video.poster} 
                 muted
               ></video>
               {playingVideoIndex !== index && (

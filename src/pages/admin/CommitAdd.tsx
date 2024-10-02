@@ -61,16 +61,15 @@ const CommitAdd: React.FC = () => {
 
       toast.success("Video uploaded successfully!");
 
-      // Refresh videos after upload
       const querySnapshot = await getDocs(collection(firestore, "videos"));
       const fetchedVideos: Video[] = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
       })) as Video[];
       setVideos(fetchedVideos);
-      setSelectedVideo(null); // Reset selected video
-      setVideoName(''); // Reset video name
-      setComment(''); // Reset comment
+      setSelectedVideo(null); 
+      setVideoName(''); 
+      setComment(''); 
     } catch (error) {
       toast.error(`Failed to upload ${videoName}.`);
     }
@@ -81,9 +80,7 @@ const CommitAdd: React.FC = () => {
     const videoRef = ref(storage, `videos/${videos.find(video => video.id === id)?.name}`);
 
     try {
-      // Delete from Firestore
       await deleteDoc(videoDoc);
-      // Delete from Storage
       await deleteObject(videoRef);
 
       // Update local state
@@ -95,9 +92,9 @@ const CommitAdd: React.FC = () => {
   };
 
   const handleEdit = (video: Video) => {
-    setEditingVideo(video); // Set the video to edit
-    setVideoName(video.name); // Set the current name for editing
-    setComment(video.comment); // Set the current comment for editing
+    setEditingVideo(video); 
+    setVideoName(video.name);
+    setComment(video.comment); 
   };
 
   const handleUpdate = async () => {
