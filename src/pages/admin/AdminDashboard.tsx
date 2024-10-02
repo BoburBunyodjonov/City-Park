@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // import { v4 as uuidv4 } from "uuid";
 import {
+  AppBar,
   Button,
   Checkbox,
   Dialog,
@@ -23,10 +24,13 @@ import {
   DialogContentText,
   DialogTitle,
   FormControlLabel,
+  IconButton,
   MenuItem,
   Select,
   SelectChangeEvent,
   TextField,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebaseConfig";
@@ -34,7 +38,7 @@ import DashboardTable from "./DashboardTable";
 import { DataType } from "../../constants/data";
 import BannerAdd from "./BannerAdd";
 import CommitAdd from "./CommitAdd";
-import { Comment } from "@mui/icons-material";
+import { Cancel, Comment } from "@mui/icons-material";
 import ContactTable from "./ContactTable";
 
 const AdminDashboard: React.FC = () => {
@@ -262,7 +266,7 @@ const AdminDashboard: React.FC = () => {
             <Button
               variant="contained"
               className="bg-primary"
-              style={{backgroundColor: "#1EA582"}}
+              style={{ backgroundColor: "#1EA582" }}
               onClick={() => {
                 setAddModalOpen(true);
               }}
@@ -273,13 +277,33 @@ const AdminDashboard: React.FC = () => {
 
             <DashboardTable />
 
-            <Dialog open={addModalOpen} onClose={() => setAddModalOpen(false)} className="w-[1000px]">
+            <Dialog
+              open={addModalOpen}
+              onClose={() => setAddModalOpen(false)}
+              fullScreen
+            >
+              <AppBar sx={{ position: "relative" }}>
+                <Toolbar>
+                  <IconButton
+                    edge="start"
+                    color="primary"
+                    onClick={() => setAddModalOpen(false)}
+                    aria-label="close"
+                  >
+                    <Cancel />
+                  </IconButton>
+                  <Typography
+                    sx={{ ml: 2, flex: 1 }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Add Apartment
+                  </Typography>
+                </Toolbar>
+              </AppBar>
               <DialogTitle>Edit Apartment</DialogTitle>
               <DialogContent>
-                <DialogContentText>
-                  To update this apartment, please enter the new details below.
-                </DialogContentText>
-                <div className="grid grid-cols-4 gap-3 w-full">
+                <div className="grid grid-cols-4 gap-3">
                   <TextField
                     id="outlined-basic"
                     type="text"
@@ -322,24 +346,6 @@ const AdminDashboard: React.FC = () => {
                   />
                   <TextField
                     type="text"
-                    name="price"
-                    placeholder="Narxi"
-                    label="Narxi"
-                    variant="outlined"
-                    value={apartmentData.price}
-                    onChange={handleInputChange}
-                  />
-                  <TextField
-                    type="text"
-                    name="rooms"
-                    placeholder="Xona soni"
-                    label="Xona soni"
-                    variant="outlined"
-                    value={apartmentData.rooms}
-                    onChange={handleInputChange}
-                  />
-                  <TextField
-                    type="text"
                     name="location_uz"
                     placeholder="Joylashuv (Lakatsiya) Uzbekcha"
                     label="Joylashuv (Lakatsiya)"
@@ -375,6 +381,52 @@ const AdminDashboard: React.FC = () => {
                     value={apartmentData.location_ae}
                     onChange={handleInputChange}
                   />
+                  <textarea
+                    name="description_uz"
+                    placeholder="Description"
+                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+                    value={apartmentData.description_uz}
+                    onChange={handleInputChange}
+                  />
+                  <textarea
+                    name="description_ru"
+                    placeholder="Description"
+                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+                    value={apartmentData.description_ru}
+                    onChange={handleInputChange}
+                  />
+                  <textarea
+                    name="description_tr"
+                    placeholder="Description"
+                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+                    value={apartmentData.description_tr}
+                    onChange={handleInputChange}
+                  />
+                  <textarea
+                    name="description_ae"
+                    placeholder="Description"
+                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+                    value={apartmentData.description_ae}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    type="text"
+                    name="price"
+                    placeholder="Narxi"
+                    label="Narxi"
+                    variant="outlined"
+                    value={apartmentData.price}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    type="text"
+                    name="rooms"
+                    placeholder="Xona soni"
+                    label="Xona soni"
+                    variant="outlined"
+                    value={apartmentData.rooms}
+                    onChange={handleInputChange}
+                  />
 
                   <TextField
                     type="text"
@@ -383,6 +435,16 @@ const AdminDashboard: React.FC = () => {
                     label="Maydoni"
                     variant="outlined"
                     value={apartmentData.area}
+                    onChange={handleInputChange}
+                  />
+
+                  <TextField
+                    type="text"
+                    label="Qavati"
+                    name="floor"
+                    placeholder="Qavati"
+                    variant="outlined"
+                    value={apartmentData.floor}
                     onChange={handleInputChange}
                   />
 
@@ -477,46 +539,6 @@ const AdminDashboard: React.FC = () => {
                       <MenuItem value={"standard"}>Standard</MenuItem>
                     </Select>
                   </div>
-
-                  <div className="flex flex-col">
-                    <label htmlFor="">Qavati</label>
-                    <TextField
-                      type="text"
-                      name="floor"
-                      placeholder="Qavati"
-                      variant="outlined"
-                      value={apartmentData.floor}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <textarea
-                    name="description_uz"
-                    placeholder="Description"
-                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
-                    value={apartmentData.description_uz}
-                    onChange={handleInputChange}
-                  />
-                  <textarea
-                    name="description_ru"
-                    placeholder="Description"
-                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
-                    value={apartmentData.description_ru}
-                    onChange={handleInputChange}
-                  />
-                  <textarea
-                    name="description_tr"
-                    placeholder="Description"
-                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
-                    value={apartmentData.description_tr}
-                    onChange={handleInputChange}
-                  />
-                  <textarea
-                    name="description_ae"
-                    placeholder="Description"
-                    className="border border-gray-300 rounded p-3 w-full mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
-                    value={apartmentData.description_ae}
-                    onChange={handleInputChange}
-                  />
                 </div>
                 <button
                   onClick={handleAddApartment}
