@@ -29,7 +29,6 @@ import {
   uploadFile,
 } from "../../firebase/firebaseUtils";
 import { DataType } from "../../constants/data";
-import { DeleteIcon, EditIcon } from "lucide-react";
 import { Delete, Edit } from "@mui/icons-material";
 
 const DashboardTable: React.FC = () => {

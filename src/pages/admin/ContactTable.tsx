@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getDocs,
   collection,
@@ -15,9 +15,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import { toast, ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css"; 
 import { Delete } from "@mui/icons-material";
@@ -33,8 +32,8 @@ interface ContactData {
 }
 
 const ContactTable = () => {
-  const { i18n } = useTranslation();
-  const language = i18n.language as "uz" | "ru" | "tr" | "ae";
+  // const { i18n } = useTranslation();
+  // const language = i18n.language as "uz" | "ru" | "tr" | "ae";
 
   const [contacts, setContacts] = useState<ContactData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

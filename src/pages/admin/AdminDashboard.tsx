@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import {
   Home,
-  Building,
-  Settings,
-  LogOut,
   Contact,
-  CommandIcon,
-  LetterText,
   Image,
 } from "lucide-react";
 import { addApartment } from "../../firebase/firebaseUtils";
@@ -21,8 +16,6 @@ import {
   Checkbox,
   Dialog,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControlLabel,
   IconButton,
   MenuItem,
@@ -38,7 +31,7 @@ import DashboardTable from "./DashboardTable";
 import { DataType } from "../../constants/data";
 import BannerAdd from "./BannerAdd";
 import CommitAdd from "./CommitAdd";
-import { Cancel, Close, Comment } from "@mui/icons-material";
+import { Close, Comment } from "@mui/icons-material";
 import ContactTable from "./ContactTable";
 
 const AdminDashboard: React.FC = () => {

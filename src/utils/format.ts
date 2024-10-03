@@ -20,7 +20,7 @@ export class Format {
   public number(
     number: number = 0,
     precision: number = 0,
-    type: "round" | "ceil" | "floor" = "floor"
+    // type: "round" | "ceil" | "floor" = "floor"
   ): string {
     return new Intl.NumberFormat("uz-UZ", {
       minimumFractionDigits: precision,
