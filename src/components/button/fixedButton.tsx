@@ -1,7 +1,5 @@
-import PhoneIcon from "@mui/icons-material/Phone";
 import { IconButton } from "@mui/material";
 import { styled } from "@mui/system";
-import callIcon from "../assets/phone-volume-solid 1.svg";
 
 import { CallCenterIcon } from "../../assets/svg";
 
