@@ -12,6 +12,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Send } from "@mui/icons-material";
+import FixedButton from "../../components/button/fixedButton";
 
 const RootLayout = () => {
   const { t } = useTranslation();
@@ -151,6 +152,7 @@ const RootLayout = () => {
             </div>
           </Box>
         </Modal>
+        <FixedButton/>
       </div>
       <Footer />
     </>
