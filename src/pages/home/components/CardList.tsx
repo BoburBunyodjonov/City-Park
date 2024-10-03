@@ -6,7 +6,7 @@ import useHomeContext, { ApartmentType } from "../services/homeContext";
 import { format } from "../../../utils/format";
 
 const CardList = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   // const language = i18n.language as "uz" | "ru" | "tr" | "ae";
 
   const {
