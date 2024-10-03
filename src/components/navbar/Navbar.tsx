@@ -6,15 +6,16 @@ import "./style.css";
 import { NavLink } from "react-router-dom";
 import { Button, IconButton, MenuItem, Select } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Menu, Phone } from "@mui/icons-material";
+import { Close, Menu, Phone } from "@mui/icons-material";
 
 export default function Navbar() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen((prev) => !prev);
+  // };
 
   const [activeSection, setActiveSection] = useState<string>("");
 
@@ -39,6 +40,34 @@ export default function Navbar() {
     };
   }, []);
 
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  useEffect(() => {
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
+  const toggleMenu = () => {
+    setIsOpen((prevIsOpen) => {
+      if (!prevIsOpen) {
+        document.body.classList.add("overflow-hidden"); // Disable body scroll when open
+      } else {
+        document.body.classList.remove("overflow-hidden"); // Enable body scroll when closed
+      }
+      return !prevIsOpen;
+    });
+  };
+
+  // Cleanup on unmount (in case of any issues)
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
   return (
     <>
       <header className="text-gray-600 body-font bg-white border-b border-[#f1f1f1] pt-4 px-3 sticky top-0 z-50">
@@ -47,14 +76,20 @@ export default function Navbar() {
             <a className="title-font font-medium text-gray-900">
               <img src={Logo} alt="Logo" className="h-10" />{" "}
             </a>
-            <IconButton onClick={toggleMenu}>
-              <Menu />
-            </IconButton>
+            {isMobile ? (
+              <IconButton onClick={toggleMenu}>
+                {isOpen === true ? <Close/> : <Menu/>}
+              </IconButton>
+            ) : (
+              <IconButton onClick={toggleMenu} style={{ display: "none" }}>
+                <Menu />
+              </IconButton>
+            )}
           </div>
 
           <nav
-            className={`menu-nav ${
-              isOpen ? "max-h-screen" : "max-h-0"
+            className={`menu-nav  ${
+              isOpen ? "max-h-screen " : "max-h-0"
             } transition-max-height duration-500 ease-in-out overflow-hidden md:overflow-visible md:max-h-full absolute md:static w-full md:w-auto bg-white z-50`}
           >
             <ul className="flex flex-col md:flex-row md:space-x-5 h-full w-full md:w-auto text-center md:text-left items-center">
@@ -79,7 +114,7 @@ export default function Navbar() {
             </ul>
           </nav>
 
-          <div className=" flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-4 mt-4 sm:mt-0 py-3">
+          <div className="w-full xl:w-[25%] md:order-2 flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-4 mt-4 sm:mt-0 py-3">
             <a href="tel:+90 534 267 64 77">
               <Button
                 startIcon={<Phone />}

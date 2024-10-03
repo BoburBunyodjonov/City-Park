@@ -33,6 +33,7 @@ import BannerAdd from "./BannerAdd";
 import CommitAdd from "./CommitAdd";
 import { Close, Comment } from "@mui/icons-material";
 import ContactTable from "./ContactTable";
+import QuestionsTable from "./QuestionsTable";
 
 const AdminDashboard: React.FC = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -64,7 +65,7 @@ const AdminDashboard: React.FC = () => {
   });
 
   const [activeTab, setActiveTab] = useState<
-    "add" | "manage" | "settings" | "contacts"
+    "add" | "manage" | "settings" | "contacts" | "questions"
   >("add");
 
   const handleAddApartment = async () => {
@@ -248,6 +249,15 @@ const AdminDashboard: React.FC = () => {
           >
             <Contact className="mr-2" />
             <span>Contacts</span>
+          </li>
+          <li
+            className={`flex cursor-pointer items-center p-2 mb-2 hover:bg-secondary rounded transition-colors ${
+              activeTab === "questions" ? "bg-secondary" : ""
+            }`}
+            onClick={() => setActiveTab("questions")}
+          >
+            <Contact className="mr-2" />
+            <span>Questions</span>
           </li>
         </ul>
       </div>
@@ -562,6 +572,11 @@ const AdminDashboard: React.FC = () => {
         {activeTab === "contacts" && (
           <>
             <ContactTable />
+          </>
+        )}
+          {activeTab === "questions" && (
+          <>
+            <QuestionsTable />
           </>
         )}
       </div>

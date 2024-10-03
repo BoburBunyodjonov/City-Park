@@ -69,5 +69,15 @@
                 "error":"Ma'lumotlaringizni yuborishda xatolik"
             }
         }
+    },
+    "details": {
+        "questions": {
+            "title": "Savollar bormi?",
+            "description": "Kontanktlaringizni qoldiring, biz sizga qo'ng'iroq qilib barcha savollaringizga javob beramiz.",
+            "form": {
+                "submit": "So'rov yuborish"
+            }
+
+        }
     }
 }

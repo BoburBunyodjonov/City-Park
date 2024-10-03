@@ -1,4 +1,4 @@
-import { Contact, Mortgage } from "../../../components";
+import { Mortgage } from "../../../components";
 // Icons
 import {
   AreaIcon,
@@ -11,6 +11,7 @@ import {
 import useDetailsContext from "../services/detailsContext";
 import { Button } from "@mui/material";
 import { format } from "../../../utils/format";
+import Questions from "../../../components/questions/questions";
 
 const Details = () => {
   const {
@@ -139,7 +140,7 @@ const Details = () => {
       </div>
 
       <Mortgage apartments={apartments} />
-      <Contact apartments={apartments} />
+      <Questions/>
     </>
   );
 };
