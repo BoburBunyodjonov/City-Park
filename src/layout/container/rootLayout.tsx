@@ -5,11 +5,7 @@ import Loading from "../../components/loading/Loading";
 import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import {
-  Modal,
-  Box,
-  TextField,
-} from "@mui/material";
+import { Modal, Box, TextField } from "@mui/material";
 
 import CallCenter from "../../assets/call.png";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
@@ -85,20 +81,24 @@ const RootLayout = () => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: 600,
               bgcolor: "background.paper",
               borderRadius: "20px",
               border: "1px solid white",
               p: 1,
               display: "flex",
-              justifyContent: "space-between",
             }}
           >
-            <img src={CallCenter} alt="" />
-              <form onSubmit={handleSubmit} className="w-full p-4 space-y-2 flex flex-col justify-between">
+            <div className="flex flex-col md:flex-row md:w-[550px]">
+              <img src={CallCenter} alt="" />
+              <form
+                onSubmit={handleSubmit}
+                className="w-full p-4 space-y-2 flex flex-col justify-between"
+              >
                 <div className="space-y-2">
-                <h1 className="text-3xl">Qayta qo'ng'iroq</h1>
-                <p className="text-[#A6A6A6] text-base">Menejer sizga tez orada qo'ng'iroq qiladi</p>
+                  <h1 className="text-3xl">Qayta qo'ng'iroq</h1>
+                  <p className="text-[#A6A6A6] text-base">
+                    Menejer sizga tez orada qo'ng'iroq qiladi
+                  </p>
                 </div>
                 <div className="w-full  flex flex-col justify-between md:flex-col space-y-4 ">
                   <div className="relative w-full">
@@ -139,6 +139,7 @@ const RootLayout = () => {
                   </div>
                 </div>
               </form>
+            </div>
           </Box>
         </Modal>
       </div>
