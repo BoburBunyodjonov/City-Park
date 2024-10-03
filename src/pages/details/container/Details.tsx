@@ -12,8 +12,12 @@ import useDetailsContext from "../services/detailsContext";
 import { Button } from "@mui/material";
 import { format } from "../../../utils/format";
 import Questions from "../../../components/questions/questions";
+import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
+import { useTranslation } from "react-i18next";
 
 const Details = () => {
+  const { t } = useTranslation();
+
   const {
     state: { apartments, selectedApartment },
   } = useDetailsContext();
@@ -140,7 +144,27 @@ const Details = () => {
       </div>
 
       <Mortgage apartments={apartments} />
-      <Questions/>
+      <Questions />
+
+      <div className="mt-10 mb-20">
+        <h1 className="text-black text-2xl font-bold mb-7 text-center">
+          {t("details.questions.location")}
+        </h1>
+        <div className="rounded-3xl overflow-hidden">
+          <YMaps>
+            <Map
+              defaultState={{
+                center: [55.684758, 37.738521],
+                zoom: 11,
+              }}
+              width="100%"
+              height="400px"
+            >
+              <Placemark geometry={[55.684758, 37.738521]} />
+            </Map>
+          </YMaps>
+        </div>
+      </div>
     </>
   );
 };

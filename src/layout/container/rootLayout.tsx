@@ -18,6 +18,7 @@ const RootLayout = () => {
 
   const [firstName, setFirstName] = useState("");
   const [phone, setPhone] = useState("");
+  const [formLoading, setFormLoading] = useState(false);
 
   const {
     state: { loading },
@@ -37,7 +38,7 @@ const RootLayout = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       handleOpen();
-    }, 5000);
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -46,6 +47,7 @@ const RootLayout = () => {
     e.preventDefault();
 
     try {
+      setFormLoading(true);
       const db = getFirestore();
       await addDoc(collection(db, "questions"), {
         firstName,
@@ -55,7 +57,10 @@ const RootLayout = () => {
       toast.success(t("home.contact.form.success"));
       setFirstName("");
       setPhone("");
+      setFormLoading(false);
+      handleClose();
     } catch (error) {
+      setFormLoading(false);
       console.error("Error adding document: ", error);
       toast.success(t("home.contact.form.error"));
     }
@@ -71,8 +76,6 @@ const RootLayout = () => {
         <Modal
           open={opeModalCall}
           onClose={handleClose}
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
           className="rounded-2xl"
         >
           <Box
@@ -87,17 +90,22 @@ const RootLayout = () => {
               p: 1,
               display: "flex",
             }}
+            className="w-[90%] md:w-auto"
           >
-            <div className="flex flex-col md:flex-row md:w-[550px]">
-              <img src={CallCenter} alt="" />
+            <div className="flex flex-col md:flex-row w-full md:w-auto">
+              <img
+                src={CallCenter}
+                alt="call-center-ikan-park"
+                className="rounded-2xl w-full h-[305px] object-cover md:min-w-[250px]"
+              />
               <form
                 onSubmit={handleSubmit}
                 className="w-full p-4 space-y-2 flex flex-col justify-between"
               >
                 <div className="space-y-2">
-                  <h1 className="text-3xl">Qayta qo'ng'iroq</h1>
+                  <h1 className="text-3xl">{t("call.title")}</h1>
                   <p className="text-[#A6A6A6] text-base">
-                    Menejer sizga tez orada qo'ng'iroq qiladi
+                    {t("call.description")}
                   </p>
                 </div>
                 <div className="w-full  flex flex-col justify-between md:flex-col space-y-4 ">
@@ -106,7 +114,7 @@ const RootLayout = () => {
                       size="small"
                       fullWidth
                       variant="outlined"
-                      placeholder={t("home.contact.form.first_name")}
+                      placeholder={t("call.name")}
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       required
@@ -118,7 +126,7 @@ const RootLayout = () => {
                       size="small"
                       fullWidth
                       variant="outlined"
-                      placeholder={t("home.contact.form.phone_number")}
+                      placeholder={t("call.phone_number")}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       required
@@ -131,10 +139,11 @@ const RootLayout = () => {
                       variant="contained"
                       type="submit"
                       endIcon={<Send />}
-                      loading={loading}
+                      loading={formLoading}
                       loadingPosition="end"
+                      disableElevation
                     >
-                      {t("details.questions.form.submit")}
+                      {t("call.submit")}
                     </LoadingButton>
                   </div>
                 </div>

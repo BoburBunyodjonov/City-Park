@@ -21,7 +21,7 @@ export const getApartments = async (
 ): Promise<DataType[]> => {
   const apartmentsCollection = collection(firestore, "apartments");
   const snapshot = await getDocs(apartmentsCollection);
-  console.log(payload)
+  console.log(payload);
   const apartmentsList = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),

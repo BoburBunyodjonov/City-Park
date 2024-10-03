@@ -18,6 +18,15 @@
         "work_time_title":"Ish vaqti",
         "work_time":"Sotuv boʻlimi: Du-Ju: с 9:00 до 19:00 Sh-Ya: с 10:00 до 18:00"
     },
+    "call": {
+      "title": "Qayta qo'ng'iroq",
+      "description":"Menejer sizga tez orada qo'ng'iroq qiladi",
+      "name":"Ism",
+      "phone_number":"Telefon raqam" ,
+      "submit":"Yuborish",
+      "success":"",
+      "error":"" 
+    },
     "home":{
         "residences":"Ikon Parkdagi turar joy majmualari",
         "apartments_count":"{{count}} ta ko'rsatgich",
@@ -76,8 +85,8 @@
             "description": "Kontanktlaringizni qoldiring, biz sizga qo'ng'iroq qilib barcha savollaringizga javob beramiz.",
             "form": {
                 "submit": "So'rov yuborish"
-            }
-
+            },
+            "location":"Xaritada joylashuvi"
         }
     }
 }
