@@ -13,9 +13,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // const toggleMenu = () => {
-  //   setIsOpen((prev) => !prev);
-  // };
 
   const [activeSection, setActiveSection] = useState<string>("");
 

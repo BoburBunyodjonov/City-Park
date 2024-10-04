@@ -65,6 +65,7 @@ const DashboardTable: React.FC = () => {
     repair: false,
     parking: false,
     floor: 0,
+    catalog_file: null,
   });
 
   useEffect(() => {
@@ -93,9 +94,9 @@ const DashboardTable: React.FC = () => {
       description_ru: apartment.description_ru || "",
       description_tr: apartment.description_tr || "",
       description_ae: apartment.description_ae || "",
-      img1: null,
-      img2: null,
-      img3: null,
+      img1: apartment.img1 || null,
+      img2: apartment.img2 || null,
+      img3: apartment.img3 || null,
       rooms: apartment.rooms || "",
       location_uz: apartment.location_uz || "",
       location_ru: apartment.location_ru || "",
@@ -108,6 +109,7 @@ const DashboardTable: React.FC = () => {
       repair: apartment.repair || false,
       parking: apartment.parking || false,
       floor: apartment.floor || 0,
+      catalog_file: apartment.catalog_file || null,
     });
 
     setEditModalOpen(true);
@@ -144,23 +146,31 @@ const DashboardTable: React.FC = () => {
 
   const handleEditSubmit = async () => {
     if (currentApartment && currentApartment.id) {
-      console.log("Current Apartment:", currentApartment); // Debug log
+      console.log("Current Apartment:", currentApartment);
 
       try {
-        // Prepare an array of upload promises
         const uploadPromises = [
-          formData.img1 ? uploadFile(formData.img1) : Promise.resolve(""), // Default to an empty string if not provided
+          formData.img1 ? uploadFile(formData.img1) : Promise.resolve(""),
           formData.img2 ? uploadFile(formData.img2) : Promise.resolve(""),
           formData.img3 ? uploadFile(formData.img3) : Promise.resolve(""),
+          formData.catalog_file
+            ? uploadFile(formData.catalog_file)
+            : Promise.resolve(""),
         ];
 
         // Wait for all uploads to complete
-        const [uploadedImg1, uploadedImg2, uploadedImg3] = await Promise.all(
-          uploadPromises
-        );
+        const [uploadedImg1, uploadedImg2, uploadedImg3, uploadedCatalog] =
+          await Promise.all(uploadPromises);
 
+        // Log the uploaded results to verify
+        console.log("Uploaded Image 1:", uploadedImg1);
+        console.log("Uploaded Image 2:", uploadedImg2);
+        console.log("Uploaded Image 3:", uploadedImg3);
+        console.log("Uploaded Catalog:", uploadedCatalog);
+
+        // Build sanitized data
         const sanitizedData: DataType = {
-          id: currentApartment.id.toString(), // Corrected ID assignment
+          id: currentApartment.id.toString(),
           title_uz: formData.title_uz ?? "",
           title_ru: formData.title_ru ?? "",
           title_tr: formData.title_tr ?? "",
@@ -182,23 +192,23 @@ const DashboardTable: React.FC = () => {
           location_tr: formData.location_tr ?? "",
           location_ae: formData.location_ae ?? "",
 
-          type: formData.type as "business_center" | "beach" | "standard", // Ensure this is valid
+          type: formData.type as "business_center" | "beach" | "standard",
 
-          mortgage: formData.mortgage === false,
+          mortgage: formData.mortgage ?? false,
           area: formData.area ?? "",
 
-          furniture: formData.furniture === false,
-          repair: formData.repair === false,
-          parking: formData.parking === false,
+          furniture: formData.furniture ?? false,
+          repair: formData.repair ?? false,
+          parking: formData.parking ?? false,
 
           floor: Number(formData.floor) || 0,
+
+          catalog_file: uploadedCatalog,
         };
 
-        console.log("Sanitized Data:", sanitizedData); // Debug log before updating
+        console.log("Sanitized Data:", sanitizedData);
 
         const apartmentId = currentApartment.id.toString();
-
-        // Update the apartment
         await updateApartment(apartmentId, sanitizedData);
 
         // Update the local state
@@ -253,6 +263,8 @@ const DashboardTable: React.FC = () => {
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+
+  console.log(apartments);
 
   return (
     <div>
@@ -389,6 +401,11 @@ const DashboardTable: React.FC = () => {
               </TableCell>
               <TableCell
                 sx={{ borderBottom: "1px solid #ddd", fontWeight: "bold" }}
+              >
+                Catalog file
+              </TableCell>
+              <TableCell
+                sx={{ borderBottom: "1px solid #ddd", fontWeight: "bold" }}
                 align="center"
               >
                 Actions
@@ -423,31 +440,37 @@ const DashboardTable: React.FC = () => {
                 <TableCell sx={{ borderRight: "1px solid #ddd" }}>
                   {apartment.price}
                 </TableCell>
-                <TableCell   sx={{
+                <TableCell
+                  sx={{
                     borderRight: "1px solid #ddd",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: 100,
-                  }}>
+                  }}
+                >
                   {apartment.description_uz}
                 </TableCell>
-                <TableCell   sx={{
+                <TableCell
+                  sx={{
                     borderRight: "1px solid #ddd",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: 100,
-                  }}>
+                  }}
+                >
                   {apartment.description_ru}
                 </TableCell>
-                <TableCell   sx={{
+                <TableCell
+                  sx={{
                     borderRight: "1px solid #ddd",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: 100,
-                  }}>
+                  }}
+                >
                   {apartment.description_tr}
                 </TableCell>
                 <TableCell
@@ -536,6 +559,37 @@ const DashboardTable: React.FC = () => {
                     />
                   )}
                 </TableCell>
+                <TableCell sx={{ borderRight: "1px solid #ddd" }}>
+                  {apartment.catalog_file && (
+                    <>
+                      <a
+                        href={
+                          typeof apartment.catalog_file === "string"
+                            ? apartment.catalog_file
+                            : URL.createObjectURL(apartment.catalog_file)
+                        }
+                        download={
+                          typeof apartment.catalog_file === "object"
+                            ? apartment.catalog_file.name
+                            : "file"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: "none",
+                          color: "#fff",
+                          padding: "8px 16px",
+                          backgroundColor: "#007bff",
+                          borderRadius: "4px",
+                          display: "inline-block",
+                        }}
+                      >
+                        Download File
+                      </a>
+                    </>
+                  )}
+                </TableCell>
+
                 <TableCell sx={{ display: "flex", justifyContent: "center" }}>
                   <IconButton
                     color="primary"
@@ -547,7 +601,7 @@ const DashboardTable: React.FC = () => {
                     onClick={() => handleDelete(String(apartment.id))}
                     sx={{ ml: 1 }}
                   >
-                    <Delete  className="text-red-600" />
+                    <Delete className="text-red-600" />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -745,6 +799,14 @@ const DashboardTable: React.FC = () => {
             margin="dense"
             label="Image 3"
             name="img3"
+            type="file"
+            fullWidth
+            onChange={handleEditChange}
+          />
+          <TextField
+            margin="dense"
+            label="Catalog File"
+            name="catalog_file"
             type="file"
             fullWidth
             onChange={handleEditChange}

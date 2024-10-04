@@ -24,4 +24,5 @@ export interface DataType {
   repair: boolean;
   parking: boolean;
   floor: number;
+  catalog_file: any;
 }

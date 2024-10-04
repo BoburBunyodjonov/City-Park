@@ -62,6 +62,7 @@ const AdminDashboard: React.FC = () => {
     repair: false,
     parking: false,
     floor: 0,
+    catalog_file: null,
   });
 
   const [activeTab, setActiveTab] = useState<
@@ -69,7 +70,7 @@ const AdminDashboard: React.FC = () => {
   >("add");
 
   const handleAddApartment = async () => {
-    if (!apartmentData.img1 || !apartmentData.img2 || !apartmentData.img3) {
+    if (!apartmentData.img1 || !apartmentData.img2 || !apartmentData.img3 || !apartmentData.catalog_file) {
       alert("Please select all images.");
       return;
     }
@@ -85,6 +86,10 @@ const AdminDashboard: React.FC = () => {
       });
       const img3Url = await uploadFile(apartmentData.img3).catch((err) => {
         console.error("Failed to upload img3:", err);
+        throw new Error("Failed to upload third image.");
+      });
+      const catalog_file = await uploadFile(apartmentData.catalog_file).catch((err) => {
+        console.error("Failed to upload catalog file:", err);
         throw new Error("Failed to upload third image.");
       });
 
@@ -129,6 +134,7 @@ const AdminDashboard: React.FC = () => {
         repair: apartmentData.repair,
         parking: apartmentData.parking,
         floor: +apartmentData.floor,
+        catalog_file: catalog_file,
       });
 
       setApartmentData({
@@ -156,6 +162,7 @@ const AdminDashboard: React.FC = () => {
         repair: false,
         parking: false,
         floor: 0,
+        catalog_file: null,
       });
 
       toast.success("Kvartira qo'shildi");
@@ -469,6 +476,12 @@ const AdminDashboard: React.FC = () => {
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleFileChange(e, "img3")}
+                    className="border border-gray-300 rounded p-3 w-full mb-4"
+                  />
+                   <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={(e) => handleFileChange(e, "catalog_file")}
                     className="border border-gray-300 rounded p-3 w-full mb-4"
                   />
 

@@ -89,6 +89,22 @@ const Details = () => {
               variant="contained"
               disableElevation
               sx={{ marginTop: "20px" }}
+              onClick={() => {
+                const fileUrl =
+                  typeof selectedApartment?.catalog_file === "string"
+                    ? selectedApartment?.catalog_file
+                    : URL.createObjectURL(selectedApartment?.catalog_file);
+
+                const link = document.createElement("a");
+                link.href = fileUrl;
+                link.download =
+                  typeof selectedApartment?.catalog_file === "object"
+                    ? selectedApartment?.catalog_file.name
+                    : "file";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
             >
               To’liq katalogni yuklash
             </Button>
