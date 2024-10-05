@@ -5,14 +5,44 @@ import { useTranslation } from "react-i18next";
 import useHomeContext, { ApartmentType } from "../services/homeContext";
 import { format } from "../../../utils/format";
 
+type RoomType = number | "All";
+
 const CardList = () => {
   const { t } = useTranslation();
-  // const language = i18n.language as "uz" | "ru" | "tr" | "ae";
 
   const {
-    state: { room, type, rangeValues, data, apartmentTypes },
+    state: {
+      room,
+      type, 
+      rangeValues = [0, 200000],
+      data,
+      apartmentTypes,
+    },
     actions: { handleRangeChange, setRoom, setType },
   } = useHomeContext();
+
+  const isRoomSelected = room !== "All";
+  const isTypeSelected = type !== "All";
+
+  const filteredData = data.filter((item) => {
+    const selectedRoom = isRoomSelected ? room : undefined;
+
+    const matchesRoom = selectedRoom
+      ? Number(String(item.rooms).split('+')[0]) === Number(selectedRoom)
+      : true;
+
+    const matchesType = isTypeSelected ? item.type === type : true;
+
+    const matchesPrice =
+      item.price >= rangeValues[0] && item.price <= rangeValues[1];
+
+    return matchesRoom && matchesType && matchesPrice;
+  });
+
+  const displayData =
+    isRoomSelected || isTypeSelected || rangeValues[0] !== 0 || rangeValues[1] !== 200000
+      ? filteredData
+      : data;
 
   return (
     <>
@@ -23,7 +53,7 @@ const CardList = () => {
               {t("home.residences")}
             </h1>
             <h1 className="sm:text-xl text-xl font-medium title-font mb-4 text-primary">
-              {t("home.apartments_count", { count: 6 })}
+              {t("home.apartments_count", { count: displayData.length })}
             </h1>
           </div>
           <div className="flex lg:w-2/3 w-full sm:flex-row flex-col sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 ">
@@ -31,29 +61,28 @@ const CardList = () => {
               <Select
                 fullWidth
                 size="small"
-                id="demo-simple-select"
-                value={room}
-                onChange={(e) => setRoom(Number(e.target.value))}
+                id="room-select"
+                value={room || "All"}
+                onChange={(e) => setRoom(e.target.value as RoomType)}
               >
-                {Array.from({ length: 10 }, (_, index) => index).map(
-                  (index) => (
-                    <MenuItem key={index} value={index + 1}>
-                      {t("home.filter.room", { room: index + 1 })}
-                    </MenuItem>
-                  )
-                )}
+                <MenuItem value="All">{t("Hammasi")}</MenuItem>
+                {Array.from({ length: 10 }, (_, index) => (
+                  <MenuItem key={index} value={index + 1}>
+                    {t("home.filter.room", { room: index + 1 })}
+                  </MenuItem>
+                ))}
               </Select>
             </div>
             <div className="relative flex-grow w-full rounded border flex flex-col justify-between border-[#0000003B] h-[40px]">
               <div className="flex-grow flex justify-between items-center w-full px-3">
                 <div className="text-gray-600">
                   <span className="">
-                    {format.money(rangeValues?.[0], "USD")}
+                    {format.money(rangeValues[0], "USD")}
                   </span>
                 </div>
                 <div className="text-gray-600">
                   <span className="">
-                    {format.money(rangeValues?.[1], "USD")}
+                    {format.money(rangeValues[1], "USD")}
                   </span>
                 </div>
               </div>
@@ -101,9 +130,10 @@ const CardList = () => {
               <Select
                 fullWidth
                 size="small"
-                value={type}
+                value={type || "All"}
                 onChange={(e) => setType(e.target.value as ApartmentType)}
               >
+                <MenuItem value="All" defaultChecked>{t("Hammasi")}</MenuItem>
                 {apartmentTypes?.map((type, index) => (
                   <MenuItem key={index} value={type}>
                     {t(`home.filter.${type}`)}
@@ -115,7 +145,7 @@ const CardList = () => {
         </div>
       </section>
       <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-7 mb-10">
-        {data.map((item) => (
+        {displayData.map((item) => (
           <Card key={item.id} {...item} />
         ))}
       </div>

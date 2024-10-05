@@ -6,8 +6,7 @@ import {
   FixIcon,
   ObjectIcon,
 } from "../../../assets/svg";
-// Data Types
-// Firebase Data
+
 import useDetailsContext from "../services/detailsContext";
 import { Button } from "@mui/material";
 import { format } from "../../../utils/format";

@@ -40,7 +40,7 @@ const DashboardTable: React.FC = () => {
     null
   );
   const [formData, setFormData] = useState<DataType>({
-    id: "", // or 0 if you prefer a number for the initial state
+    id: "", 
     title_uz: "",
     title_ru: "",
     title_tr: "",
@@ -158,17 +158,9 @@ const DashboardTable: React.FC = () => {
             : Promise.resolve(""),
         ];
 
-        // Wait for all uploads to complete
         const [uploadedImg1, uploadedImg2, uploadedImg3, uploadedCatalog] =
           await Promise.all(uploadPromises);
 
-        // Log the uploaded results to verify
-        console.log("Uploaded Image 1:", uploadedImg1);
-        console.log("Uploaded Image 2:", uploadedImg2);
-        console.log("Uploaded Image 3:", uploadedImg3);
-        console.log("Uploaded Catalog:", uploadedCatalog);
-
-        // Build sanitized data
         const sanitizedData: DataType = {
           id: currentApartment.id.toString(),
           title_uz: formData.title_uz ?? "",
@@ -211,7 +203,6 @@ const DashboardTable: React.FC = () => {
         const apartmentId = currentApartment.id.toString();
         await updateApartment(apartmentId, sanitizedData);
 
-        // Update the local state
         setApartments((prev) =>
           prev.map((apartment) =>
             apartment.id === apartmentId
@@ -240,7 +231,7 @@ const DashboardTable: React.FC = () => {
     if (window.confirm("Are you sure you want to delete this apartment?")) {
       try {
         await deleteApartment(id);
-        const apartmentsData = await getApartments(); // Call without id
+        const apartmentsData = await getApartments(); 
         setApartments(apartmentsData);
         setSnackbarMessage("Apartment deleted successfully!");
         setSnackbarOpen(true);
@@ -263,8 +254,6 @@ const DashboardTable: React.FC = () => {
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
-
-  console.log(apartments);
 
   return (
     <div>
@@ -624,7 +613,6 @@ const DashboardTable: React.FC = () => {
         </Alert>
       </Snackbar>
 
-      {/* Edit Apartment Modal */}
       <Dialog open={editModalOpen} onClose={handleEditClose}>
         <DialogTitle>Edit Apartment</DialogTitle>
         <DialogContent>

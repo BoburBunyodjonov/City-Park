@@ -12,7 +12,8 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebaseConfig";
 import useLayoutContext from "../../../layout/services/layoutContext";
 
-export type ApartmentType = "business_center" | "beach" | "standard";
+export type ApartmentType = "business_center" | "beach" | "standard" | "All";
+
 
 const apartmentTypes: ApartmentType[] = [
   "business_center",
@@ -29,8 +30,8 @@ const Context = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
 
   const [rangeValues, setRangeValues] = useState<number[]>([0, 200000]);
-  const [room, setRoom] = useState<number>(2);
-  const [type, setType] = useState<ApartmentType>(apartmentTypes[2]);
+  const [room, setRoom] = useState<number | "All">("All");
+  const [type, setType] = useState<ApartmentType | "All">("All");
   const [data, setData] = useState<DataType[]>([]);
 
   const [reviews, setReviews] = useState<
@@ -49,7 +50,7 @@ const Context = () => {
     try {
       const apartments = await getApartments({
         price: rangeValues,
-        room,
+        room: room === "All" ? 0 : room, 
         type,
       });
       setData(apartments);

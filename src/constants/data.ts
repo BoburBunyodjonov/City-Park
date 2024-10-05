@@ -12,7 +12,7 @@ export interface DataType {
   description_ru: string;
   description_tr: string;
   description_ae: string;
-  rooms: string;
+  rooms: string | number;
   location_uz: string;
   location_ru: string;
   location_tr: string;
