@@ -53,7 +53,12 @@ const Questions = () => {
                   variant="outlined"
                   placeholder={t("home.contact.form.first_name")}
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z]*$/.test(value)) {
+                      setFirstName(value);
+                    }
+                  }}
                   required
                   className="bg-white"
                 />
@@ -65,7 +70,12 @@ const Questions = () => {
                   variant="outlined"
                   placeholder={t("home.contact.form.phone_number")}
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\+?\d*$/.test(value)) {
+                      setPhone(value);
+                    }
+                  }}
                   required
                   className="bg-white"
                 />

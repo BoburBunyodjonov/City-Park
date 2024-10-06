@@ -42,7 +42,9 @@
             "business_center":"Biznes markazi",
             "beach":"Sohil bo'yi",
             "standard":"Standard",
-            "floor":"qavat"
+            "floor":"qavat",
+            "more":"Ko'proq",
+            "all":"Hammasi"
         },
         "mortgage":{
             "title":"Ipoteka",
@@ -87,6 +89,14 @@
                 "submit": "So'rov yuborish"
             },
             "location":"Xaritada joylashuvi"
-        }
+        },
+        "first_price": "Boshlang’ich narxi",
+        "download_catalog": "To’liq katalogni yuklash",
+        "area":"Maydoni",
+        "furniture":"Jihozlari",
+        "repair":"Ta’miri",
+        "parking":"Avtomobil maydoni",
+        "yes": "Mavjud",
+        "no": "Mavjud emas"
     }
 }

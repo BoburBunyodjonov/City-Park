@@ -25,11 +25,13 @@ import {
   TableRow,
   Typography,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Delete, Edit } from "@mui/icons-material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 // Image interface
 export interface Image {
@@ -40,23 +42,28 @@ export interface Image {
 
 const BannerAdd: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null); // Changed to hold only one image
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [editingImageId, setEditingImageId] = useState<string | null>(null);
   const [newImageName, setNewImageName] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const [editMode, setEditMode] = useState(false); // New state for edit mode
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
+        setLoading(true);
         const querySnapshot = await getDocs(collection(firestore, "banners"));
         const fetchedImages: Image[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as Image[];
         setImages(fetchedImages);
+        setLoading(false);
       } catch (error) {
         toast.error("Failed to fetch images.");
+        setLoading(false);
       }
     };
     fetchImages();
@@ -64,7 +71,7 @@ const BannerAdd: React.FC = () => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedImage(e.target.files[0]); // Update to set only one image
+      setSelectedImage(e.target.files[0]);
     }
   };
 
@@ -72,6 +79,7 @@ const BannerAdd: React.FC = () => {
     if (selectedImage) {
       const storageRef = ref(storage, `banners/${selectedImage.name}`);
       try {
+        setBtnLoading(true)
         await uploadBytes(storageRef, selectedImage);
         const url = await getDownloadURL(storageRef);
 
@@ -80,18 +88,20 @@ const BannerAdd: React.FC = () => {
           name: selectedImage.name,
         });
         toast.success("Image uploaded successfully!");
+        setBtnLoading(false)
+        handleClose()
       } catch (error) {
         toast.error(`Failed to upload ${selectedImage.name}.`);
+        setBtnLoading(false)
       }
 
-      // Fetch updated images after upload
       const querySnapshot = await getDocs(collection(firestore, "banners"));
       const fetchedImages: Image[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       })) as Image[];
       setImages(fetchedImages);
-      setSelectedImage(null); // Clear selected image
+      setSelectedImage(null);
     }
   };
 
@@ -115,8 +125,8 @@ const BannerAdd: React.FC = () => {
   const handleEdit = (image: Image) => {
     setEditingImageId(image.id);
     setNewImageName(image.name);
-    setEditMode(true); // Set edit mode
-    setOpen(true); // Open the modal for editing
+    setEditMode(true);
+    setOpen(true);
   };
 
   const handleUpdate = async () => {
@@ -131,6 +141,7 @@ const BannerAdd: React.FC = () => {
         : null;
 
       try {
+        setBtnLoading(true)
         await updateDoc(imageDoc, { name: newImageName || editingImage.name });
         if (selectedImage) {
           await uploadBytes(newStorageRef!, selectedImage);
@@ -140,7 +151,7 @@ const BannerAdd: React.FC = () => {
         }
         setEditingImageId(null);
         setNewImageName("");
-        setEditMode(false); // Reset edit mode
+        setEditMode(false);
         toast.success("Image updated successfully!");
         const querySnapshot = await getDocs(collection(firestore, "banners"));
         const fetchedImages: Image[] = querySnapshot.docs.map((doc) => ({
@@ -148,22 +159,25 @@ const BannerAdd: React.FC = () => {
           ...doc.data(),
         })) as Image[];
         setImages(fetchedImages);
+        setBtnLoading(false)
+        handleClose()
       } catch (error) {
         toast.error("Failed to update image.");
+        setBtnLoading(false)
       }
     }
   };
 
   const handleOpen = () => {
     setOpen(true);
-    setEditMode(false); // Reset edit mode when opening modal
+    setEditMode(false);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setEditMode(false); // Reset edit mode when closing modal
+    setEditMode(false);
     setNewImageName("");
-    setSelectedImage(null); // Clear selected image
+    setSelectedImage(null);
   };
 
   return (
@@ -178,37 +192,46 @@ const BannerAdd: React.FC = () => {
         Add Banner
       </Button>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Image</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Edit</TableCell>
-              <TableCell>Delete</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {images.map((image) => (
-              <TableRow key={image.id}>
-                <TableCell>
-                  <img src={image.url} alt={image.name} width={100} />
-                </TableCell>
-                <TableCell>{image.name}</TableCell>
-                <TableCell>
-                  <Edit className="text-blue-500 cursor-pointer" onClick={() => handleEdit(image)} />
-                </TableCell>
-                <TableCell>
-                  <Delete
-                    className="text-red-500 cursor-pointer"
-                    onClick={() => handleDelete(image.id)}
-                  />
-                </TableCell>
+      {loading ? (
+        <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+          <CircularProgress />
+        </div>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Image</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Edit</TableCell>
+                <TableCell>Delete</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {images.map((image) => (
+                <TableRow key={image.id}>
+                  <TableCell>
+                    <img src={image.url} alt={image.name} width={100} />
+                  </TableCell>
+                  <TableCell>{image.name}</TableCell>
+                  <TableCell>
+                    <Edit
+                      className="text-blue-500 cursor-pointer"
+                      onClick={() => handleEdit(image)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Delete
+                      className="text-red-500 cursor-pointer"
+                      onClick={() => handleDelete(image.id)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
 
       <Modal open={open} onClose={handleClose}>
         <Box
@@ -244,14 +267,18 @@ const BannerAdd: React.FC = () => {
               />
             </Box>
           )}
-          <Button
-            variant="contained"
-            color="primary"
+          <LoadingButton
             onClick={editMode ? handleUpdate : uploadImage}
-            disabled={!selectedImage && !editMode} // Disable if no image is selected
+            fullWidth
+            variant="contained"
+            className="bg-primary py-4"
+            style={{ backgroundColor: "#1EA582" }}
+            sx={{ marginTop: "50px" }}
+            disableElevation
+            loading={btnLoading}
           >
             {editMode ? "Update Image" : "Upload Image"}
-          </Button>
+          </LoadingButton>
         </Box>
       </Modal>
 

@@ -4,12 +4,18 @@ import { MenuNavLink } from "./navbar.constants";
 import { Link } from "react-scroll";
 import "./style.css";
 import { NavLink } from "react-router-dom";
-import { Button, IconButton, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Close, Menu, Phone } from "@mui/icons-material";
 
 export default function Navbar() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -63,14 +69,18 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  const changeLanguage = (e: SelectChangeEvent<string>) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
   return (
     <>
       <header className="text-gray-600 body-font bg-white border-b border-[#f1f1f1] px-3 sticky top-0 z-50">
         <div className="container mx-auto flex flex-wrap items-center justify-between pt-3">
           <div className="flex justify-between items-center w-full md:w-auto mb-4 md:mb-0">
-            <a className="title-font font-medium text-gray-900">
+            <NavLink to="/" className="title-font font-medium text-gray-900">
               <img src={Logo} alt="Logo" className="h-10" />
-            </a>
+            </NavLink>
             {isMobile ? (
               <IconButton onClick={toggleMenu}>
                 {isOpen === true ? <Close /> : <Menu />}
@@ -96,10 +106,16 @@ export default function Navbar() {
                 +90 534 267 64 77
               </Button>
             </a>
-            <Select size="small" defaultValue={10} sx={{ height: 36.5 }}>
-              <MenuItem value={10}>Uzbek</MenuItem>
-              <MenuItem value={20}>Rus</MenuItem>
-              <MenuItem value={30}>Ingliz</MenuItem>
+            <Select
+              size="small"
+              defaultValue={i18n.language}
+              sx={{ height: 36.5 }}
+              onChange={changeLanguage}
+            >
+              <MenuItem value="uz">O'zbek</MenuItem>
+              <MenuItem value="ru">Русский</MenuItem>
+              <MenuItem value="ae">عربي</MenuItem>
+              <MenuItem value="tr">Türk</MenuItem>
             </Select>
           </div>
 

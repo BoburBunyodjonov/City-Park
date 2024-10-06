@@ -38,6 +38,7 @@ export default function Carousel() {
 
   const settings: Settings = useMemo(
     () => ({
+      fade: true,
       dots: slides.length > 1,
       infinite: slides.length > 1,
       speed: 500,
@@ -47,6 +48,7 @@ export default function Carousel() {
       autoplaySpeed: 2000,
       nextArrow: slides.length > 1 ? <SampleNextArrow /> : undefined,
       prevArrow: slides.length > 1 ? <SamplePrevArrow /> : undefined,
+      waitForAnimate: false,
     }),
     [slides]
   );

@@ -1,4 +1,4 @@
-import { storage, firestore } from "../../firebase/firebaseConfig"; // Import Firebase config
+import { storage, firestore } from "../../firebase/firebaseConfig";
 import {
   ref,
   uploadBytes,
@@ -30,11 +30,13 @@ import {
   TableRow,
   Paper,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Delete, Edit } from "@mui/icons-material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export interface Video {
   id: string;
@@ -50,18 +52,23 @@ const CommitAdd: React.FC = () => {
   const [comment, setComment] = useState<string>("");
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
+        setLoading(true);
         const querySnapshot = await getDocs(collection(firestore, "videos"));
         const fetchedVideos: Video[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as Video[];
         setVideos(fetchedVideos);
+        setLoading(false);
       } catch (error) {
         toast.error("Failed to fetch videos.");
+        setLoading(false);
       }
     };
     fetchVideos();
@@ -79,6 +86,7 @@ const CommitAdd: React.FC = () => {
 
     const storageRef = ref(storage, `videos/${selectedVideo.name}`);
     try {
+      setBtnLoading(true)
       await uploadBytes(storageRef, selectedVideo);
       const url = await getDownloadURL(storageRef);
 
@@ -100,8 +108,11 @@ const CommitAdd: React.FC = () => {
       setVideoName("");
       setComment("");
       setOpen(false);
+      setBtnLoading(false)
+      handleClose()
     } catch (error) {
       toast.error(`Failed to upload ${videoName}.`);
+      setBtnLoading(false)
     }
   };
 
@@ -137,6 +148,7 @@ const CommitAdd: React.FC = () => {
       const newStorageRef = ref(storage, `videos/${videoName}`);
 
       try {
+        setBtnLoading(true)
         await updateDoc(videoDoc, { name: videoName, comment });
 
         if (selectedVideo) {
@@ -159,8 +171,11 @@ const CommitAdd: React.FC = () => {
           ...doc.data(),
         })) as Video[];
         setVideos(fetchedVideos);
+        setBtnLoading(false)
+        handleClose()
       } catch (error) {
         toast.error("Failed to update video.");
+        setBtnLoading(false)
       }
     }
   };
@@ -223,56 +238,68 @@ const CommitAdd: React.FC = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
+          <Button fullWidth onClick={handleClose}>Cancel</Button>
+          <LoadingButton
+             onClick={editingVideo ? handleUpdate : uploadVideo}
+            fullWidth
             variant="contained"
-            color="primary"
-            onClick={editingVideo ? handleUpdate : uploadVideo}
+            className="bg-primary"
+            style={{ backgroundColor: "#1EA582" }}
+            disableElevation
+            loading={btnLoading}
             disabled={!videoName || (!selectedVideo && !editingVideo)}
           >
-            {editingVideo ? "Update Video" : "Upload Video"}
-          </Button>
+               {editingVideo ? "Update Video" : "Upload Video"}
+          </LoadingButton>
         </DialogActions>
       </Dialog>
 
-      {/* Uploaded Videos Table */}
-      <TableContainer component={Paper} sx={{ marginTop: "30px" }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Video</TableCell>
-              <TableCell>Video Name</TableCell>
-              <TableCell>Comment</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {videos.map((video) => (
-              <TableRow key={video.id}>
-                <TableCell>
-                  <video width="120" controls>
-                    <source src={video.url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </TableCell>
-                <TableCell>{video.name}</TableCell>
-                <TableCell>{video.comment}</TableCell>
-                <TableCell>
-                  <IconButton color="primary" onClick={() => handleEdit(video)}>
-                    <Edit />
-                  </IconButton>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDelete(video.id)}
-                  >
-                    <Delete />
-                  </IconButton>
-                </TableCell>
+      {loading ? (
+        <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+          <CircularProgress />
+        </div>
+      ) : (
+        <TableContainer component={Paper} sx={{ marginTop: "30px" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Video</TableCell>
+                <TableCell>Video Name</TableCell>
+                <TableCell>Comment</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {videos.map((video) => (
+                <TableRow key={video.id}>
+                  <TableCell>
+                    <video width="120" controls>
+                      <source src={video.url} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </TableCell>
+                  <TableCell>{video.name}</TableCell>
+                  <TableCell>{video.comment}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleEdit(video)}
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDelete(video.id)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
 
       <ToastContainer />
     </Box>

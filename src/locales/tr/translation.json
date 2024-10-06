@@ -1,1 +1,102 @@
-{}
+{
+    "navbar":{
+        "home":"Ana Sayfa",
+        "apartments":"Konut Kompleksleri",
+        "reviews":"Yorumlar",
+        "about":"Şirket Hakkında",
+        "contact":"İletişim Merkezi"
+    },
+    "footer":{
+        "call_to_me":"Beni arayın",
+        "social_media":"Sosyal Medya",
+        "sections":"Bölümler",
+        "contact":"İletişim",
+        "location_title":"Adresimiz",
+        "location":"Yashnobod ilçesi, st. Istiqbol 45-1. Infinity ticaret ofisi",
+        "target_title":"Hedef",
+        "target":"Eski şarap fabrikası. \"Infinity\" konut kompleksi",
+        "work_time_title":"Çalışma saatleri",
+        "work_time":"Satış bölümü: Pt-Cu: 09:00-19:00 Ct-Pz: 10:00-18:00"
+    },
+    "call": {
+      "title": "Geri Arama",
+      "description":"Yönetici kısa süre içinde sizi arayacak",
+      "name":"Ad",
+      "phone_number":"Telefon numarası",
+      "submit":"Gönder",
+      "success":"",
+      "error":""
+    },
+    "home":{
+        "residences":"Ikon Park Konut Kompleksleri",
+        "apartments_count":"{{count}} gösterim",
+        "filter":{
+            "room":"{{room}}+1 oda",
+            "business_center":"İş Merkezi",
+            "beach":"Sahil",
+            "standard":"Standart"
+        },
+        "apartment_card": {
+            "unavailable_image":"Resim mevcut değil",
+            "mortgage":"Kredi",
+            "business_center":"İş Merkezi",
+            "beach":"Sahil",
+            "standard":"Standart",
+            "floor":"kat",
+            "more": "Daha",
+            "all":"Her şey"
+        },
+        "mortgage":{
+            "title":"Kredi",
+            "form":{
+                "select_apartment":"Daire Seç",
+                "price":"Fiyatı",
+                "initial_payment":"Peşinat"
+            },
+            "monthly_payment":"Aylık Ödeme",
+            "discount":"İndirim",
+            "total_payment":"Toplam Ödeme",
+            "duration":"{{year}} yıl",
+            "description": "Ticari kredi almak için lütfen satış bölümü ile telefon üzerinden iletişime geçin {{phone}}",
+            "only_with_us": "Sadece Ikan Park'ta"
+        },
+        "reviews":{
+            "title":"Müşteri Yorumları"
+        },
+        "about":{
+            "title":"Ikan Park Hakkında",
+            "description":"Ikan Park — Türkiye'de modern, lüks ve sürdürülebilir yaşam alanları oluşturmaya odaklanmış öncü çok katlı konut inşaat şirketidir. Amacımız; rezidanlara konfor, tasarım ve işlevselliği bir arada sunan yüksek kaliteli evler sunmaktır. Ikan Park daireleri, yenilikçi mimarisi, çevre dostu inşaat malzemeleri ve modern olanaklarıyla ünlüdür. Fitness merkezleri, yeşil alanlar ve 24/7 güvenlik sistemi gibi özellikler içerir.\n\nGüvenilir bir marka olarak, her rezidana kendini evinde hissettirecek üst düzey müşteri hizmetleri sunuyoruz. Ikan Park, Türkiye'de kentsel yaşamın geleceğini şekillendirmeye ve her projemizde büyük bir değer yaratmaya kendini adamıştır."
+        },
+        "contact":{
+            "title":"İletişim",
+            "form":{
+                "first_name":"Ad",
+                "last_name":"Soyad",
+                "apartment":"Konut",
+                "phone_number":"Telefon numarası",
+                "note":"Not",
+                "submit":"Gönder",
+                "success":"Bilgileriniz başarıyla gönderildi",
+                "error":"Bilgilerinizi gönderirken hata oluştu"
+            }
+        }
+    },
+    "details": {
+        "questions": {
+            "title": "Sorularınız mı var?",
+            "description": "İletişim bilgilerinizi bırakın, sizi arayıp tüm sorularınızı yanıtlayalım.",
+            "form": {
+                "submit": "Talep gönder"
+            },
+            "location":"Haritada konum"
+        },
+        "first_price": "Başlangıç ​​fiyatı",
+        "download_catalog": "Kataloğun tamamını indir",
+        "area":"Alan",
+        "furniture":"Mobilya",
+        "repair":"Tamirat",
+        "parking":"Otopark",
+        "yes": "Orada",
+        "no": "Müsait değil"
+    }
+}

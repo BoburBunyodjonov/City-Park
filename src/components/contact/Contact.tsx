@@ -88,7 +88,12 @@ const Contact = ({ apartments }: { apartments?: DataType[] }) => {
                     variant="outlined"
                     placeholder={t("home.contact.form.first_name")}
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^[a-zA-Z]*$/.test(value)) {
+                        setFirstName(value);
+                      }
+                    }}
                     required
                   />
                 </div>
@@ -99,7 +104,12 @@ const Contact = ({ apartments }: { apartments?: DataType[] }) => {
                     variant="outlined"
                     placeholder={t("home.contact.form.last_name")}
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^[a-zA-Z]*$/.test(value)) {
+                        setLastName(value);
+                      }
+                    }}
                     required
                   />
                 </div>
@@ -131,9 +141,15 @@ const Contact = ({ apartments }: { apartments?: DataType[] }) => {
                     size="small"
                     fullWidth
                     variant="outlined"
+                    type="tel"
                     placeholder={t("home.contact.form.phone_number")}
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\+?\d*$/.test(value)) {
+                        setPhone(value);
+                      }
+                    }}
                     required
                   />
                 </div>
@@ -157,6 +173,7 @@ const Contact = ({ apartments }: { apartments?: DataType[] }) => {
                 endIcon={<Send />}
                 loading={loading}
                 loadingPosition="end"
+                disableElevation
               >
                 {t("home.contact.form.submit")}
               </LoadingButton>

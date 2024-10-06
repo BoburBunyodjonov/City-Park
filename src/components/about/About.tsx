@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import aboutImage from "../../assets/about.jpeg";
-import Logo from "../assets/logo (1).svg";
+import Logo from "../assets/logo.svg";
 
 const About = () => {
   const { t } = useTranslation();
@@ -20,7 +20,12 @@ const About = () => {
           </div>
           <div className="flex flex-col md:items-start md:text-left items-center text-center">
             <div className="w-full py-3">
-              <img src={Logo} alt="ikan-park-logo" className="m-auto" />
+              <img
+                src={Logo}
+                alt="ikan-park-logo"
+                className="m-auto mb-4"
+                width={200}
+              />
             </div>
             <p className="mb-8 leading-relaxed">
               {t("home.about.description")

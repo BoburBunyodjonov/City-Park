@@ -5,30 +5,24 @@ import { useTranslation } from "react-i18next";
 import useHomeContext, { ApartmentType } from "../services/homeContext";
 import { format } from "../../../utils/format";
 
-type RoomType = number | "All";
+type RoomType = number | "all";
 
 const CardList = () => {
   const { t } = useTranslation();
 
   const {
-    state: {
-      room,
-      type, 
-      rangeValues = [0, 200000],
-      data,
-      apartmentTypes,
-    },
+    state: { room, type, rangeValues = [0, 200000], data, apartmentTypes },
     actions: { handleRangeChange, setRoom, setType },
   } = useHomeContext();
 
-  const isRoomSelected = room !== "All";
-  const isTypeSelected = type !== "All";
+  const isRoomSelected = room !== "all";
+  const isTypeSelected = type !== "all";
 
   const filteredData = data.filter((item) => {
     const selectedRoom = isRoomSelected ? room : undefined;
 
     const matchesRoom = selectedRoom
-      ? Number(String(item.rooms).split('+')[0]) === Number(selectedRoom)
+      ? Number(String(item.rooms).split("+")[0]) === Number(selectedRoom)
       : true;
 
     const matchesType = isTypeSelected ? item.type === type : true;
@@ -40,7 +34,10 @@ const CardList = () => {
   });
 
   const displayData =
-    isRoomSelected || isTypeSelected || rangeValues[0] !== 0 || rangeValues[1] !== 200000
+    isRoomSelected ||
+    isTypeSelected ||
+    rangeValues[0] !== 0 ||
+    rangeValues[1] !== 200000
       ? filteredData
       : data;
 
@@ -62,10 +59,10 @@ const CardList = () => {
                 fullWidth
                 size="small"
                 id="room-select"
-                value={room || "All"}
+                value={room || "all"}
                 onChange={(e) => setRoom(e.target.value as RoomType)}
               >
-                <MenuItem value="All">{t("Hammasi")}</MenuItem>
+                <MenuItem value="all">{t("home.apartment_card.all")}</MenuItem>
                 {Array.from({ length: 10 }, (_, index) => (
                   <MenuItem key={index} value={index + 1}>
                     {t("home.filter.room", { room: index + 1 })}
@@ -130,10 +127,12 @@ const CardList = () => {
               <Select
                 fullWidth
                 size="small"
-                value={type || "All"}
+                value={type || "all"}
                 onChange={(e) => setType(e.target.value as ApartmentType)}
               >
-                <MenuItem value="All" defaultChecked>{t("Hammasi")}</MenuItem>
+                <MenuItem value="all" defaultChecked>
+                  {t("home.apartment_card.all")}
+                </MenuItem>
                 {apartmentTypes?.map((type, index) => (
                   <MenuItem key={index} value={type}>
                     {t(`home.filter.${type}`)}

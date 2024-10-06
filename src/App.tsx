@@ -6,7 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
-import ProtectedRoute from "./components/protextedRoute/ProtectedRoute";
+// import ProtectedRoute from "./components/protextedRoute/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import "./i18n";
 import RootLayout from "./layout/container";
@@ -61,15 +61,15 @@ const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route element={<RootLayout />}>
+        <Route path="/" element={<RootLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/details/:id" element={<Details />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
         </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/dashboard"
-          element={<ProtectedRoute element={<AdminDashboard />} />}
+          element={<AdminDashboard />}
         />
       </>
     )

@@ -67,7 +67,7 @@ const Card: React.FC<DataType> = (props) => {
               onClick={onCardClick}
               className="w-full rounded-md bg-primary py-2.5 text-center text-sm font-medium text-white hover:bg-primaryHover focus:outline-none transition-all duration-300 opacity-0 group-hover:opacity-100"
             >
-              Ko'proq
+              {t("home.apartment_card.more")}
             </button>
           </div>
         </div>

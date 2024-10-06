@@ -12,6 +12,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Send } from "@mui/icons-material";
+import CloseIcon from '@mui/icons-material/Close';
 import FixedButton from "../../components/button/fixedButton";
 
 const RootLayout = () => {
@@ -67,6 +68,10 @@ const RootLayout = () => {
     }
   };
 
+const CallCenterFooter = () => {
+  handleOpen()
+}
+
   return (
     <>
       {loading && <Loading />}
@@ -74,11 +79,7 @@ const RootLayout = () => {
       <div className="container mx-auto">
         <Outlet />
 
-        <Modal
-          open={opeModalCall}
-          onClose={handleClose}
-          className="rounded-2xl"
-        >
+        <Modal open={opeModalCall} onClose={handleClose}>
           <Box
             sx={{
               position: "absolute",
@@ -86,14 +87,16 @@ const RootLayout = () => {
               left: "50%",
               transform: "translate(-50%, -50%)",
               bgcolor: "background.paper",
-              borderRadius: "20px",
-              border: "1px solid white",
-              p: 1,
               display: "flex",
+              flexDirection: "column",
+              outline: "none",
             }}
-            className="w-[90%] md:w-auto"
+            className="w-[90%] md:w-auto rounded-2xl p-4 relative"
           >
-            <div className="flex flex-col md:flex-row w-full md:w-auto">
+            <span className="absolute right-3 top-2 cursor-pointer" onClick={handleClose}>
+             <CloseIcon />
+            </span>
+            <div className="flex flex-col md:flex-row w-full md:w-auto gap-4">
               <img
                 src={CallCenter}
                 alt="call-center-ikan-park"
@@ -101,7 +104,7 @@ const RootLayout = () => {
               />
               <form
                 onSubmit={handleSubmit}
-                className="w-full p-4 space-y-2 flex flex-col justify-between"
+                className="w-full space-y-2 flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <h1 className="text-3xl">{t("call.title")}</h1>
@@ -117,7 +120,12 @@ const RootLayout = () => {
                       variant="outlined"
                       placeholder={t("call.name")}
                       value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^[a-zA-Z]*$/.test(value)) {
+                          setFirstName(value);
+                        }
+                      }}
                       required
                       className="bg-white w-full"
                     />
@@ -129,7 +137,12 @@ const RootLayout = () => {
                       variant="outlined"
                       placeholder={t("call.phone_number")}
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\+?\d*$/.test(value)) {
+                          setPhone(value);
+                        }
+                      }}
                       required
                       className="bg-white"
                     />
@@ -152,9 +165,9 @@ const RootLayout = () => {
             </div>
           </Box>
         </Modal>
-        <FixedButton/>
+        <FixedButton />
       </div>
-      <Footer />
+      <Footer CallCenterFooter={CallCenterFooter} />
     </>
   );
 };

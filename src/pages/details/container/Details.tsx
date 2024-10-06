@@ -78,7 +78,7 @@ const Details = () => {
         </div>
         <div className="lg:w-[35%]">
           <div className="w-full bg-[#D2EDE6] p-5 rounded-2xl">
-            <span className="text-base lg:text-lg">Boshlang’ich narxi</span>
+            <span className="text-base lg:text-lg">{t('details.first_price')}</span>
             <p className="text-primary text-2xl lg:text-3xl font-semibold">
               {format.money(selectedApartment?.price, "USD")}
             </p>
@@ -105,7 +105,7 @@ const Details = () => {
                 document.body.removeChild(link);
               }}
             >
-              To’liq katalogni yuklash
+             {t("details.download_catalog")}
             </Button>
           </div>
         </div>
@@ -117,7 +117,7 @@ const Details = () => {
             <AreaIcon />
           </div>
           <div>
-            <span className="text-xs">Maydoni</span>
+            <span className="text-xs">{t("details.area")}</span>
             <p className="text-primary font-semibold text-2xl">
               {selectedApartment?.area} m<sup>2</sup>
             </p>
@@ -128,9 +128,9 @@ const Details = () => {
             <ObjectIcon />
           </div>
           <div>
-            <span className="text-xs">Jihozlari</span>
+            <span className="text-xs">{t("details.furniture")}</span>
             <p className="text-primary font-semibold text-2xl">
-              {selectedApartment?.furniture === true ? "Mavjud" : "Mavjud emas"}
+              {selectedApartment?.furniture === true ? t("details.yes") : t("details.no")}
             </p>
           </div>
         </div>
@@ -139,9 +139,9 @@ const Details = () => {
             <FixIcon />
           </div>
           <div>
-            <span className="text-xs">Ta’miri</span>
+            <span className="text-xs">{t("details.repair")}</span>
             <p className="text-primary font-semibold text-2xl">
-              {selectedApartment?.repair === true ? "Mavjud" : "Mavjud emas"}
+              {selectedApartment?.repair === true ? t("details.yes") : t("details.no")}
             </p>
           </div>
         </div>
@@ -150,9 +150,9 @@ const Details = () => {
             <AvtoParkingIcon />
           </div>
           <div>
-            <span className="text-xs">Avtomobil maydoni</span>
+            <span className="text-xs">{t("details.parking")}</span>
             <p className="text-primary font-semibold text-2xl">
-              {selectedApartment?.parking === true ? "Mavjud" : "Mavjud emas"}
+              {selectedApartment?.parking === true ? t("details.yes") : t("details.no")}
             </p>
           </div>
         </div>

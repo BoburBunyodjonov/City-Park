@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import footerLogo from "../assets/logo (1).svg";
+import footerLogo from "../assets/logo.svg";
 import { MenuNavLink } from "../navbar/navbar.constants";
 
 import { Instagram, Telegram, WhatsApp, YouTube } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
-const Footer = () => {
+const Footer =  ({ CallCenterFooter }: { CallCenterFooter: any }) => {
   const { t } = useTranslation();
 
   return (
@@ -18,11 +18,9 @@ const Footer = () => {
           >
             +90 (534) 267 64 77
           </a>
-          <a href="tel:+998901234567">
-            <button className="hover:bg-primary hover:text-white duration-100 border border-primary px-4 py-2 rounded-xl text-primary">
+            <button onClick={CallCenterFooter} className="hover:bg-primary hover:text-white duration-100 border border-primary px-4 py-2 rounded-xl text-primary">
               {t("footer.call_to_me")}
             </button>
-          </a>
         </div>
       </div>
       <div className="container py-24 mx-auto flex md:items-center md:flex-row md:flex-nowrap flex-wrap flex-col">

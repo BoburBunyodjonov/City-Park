@@ -1,7 +1,6 @@
-// src/components/ProtectedRoute.tsx
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // AuthContext'dan useAuth hook'ini import qiling
+import { useAuth } from '../../context/AuthContext'; 
 
 interface ProtectedRouteProps {
   element: JSX.Element;
@@ -10,7 +9,6 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const { currentUser, isAdmin } = useAuth();
 
-  // Foydalanuvchi autentifikatsiya qilinganmi va adminmi?
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
@@ -19,7 +17,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     return <Navigate to="/" />;
   }
 
-  return element; // Agar admin bo'lsa, elementni qaytaradi
+  return element; 
 };
 
 export default ProtectedRoute;
